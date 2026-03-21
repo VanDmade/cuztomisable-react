@@ -1,0 +1,115 @@
+// src/app/(settings)/index.tsx
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import { AppConfig } from '../../app.config';
+import { FormScreen, ListItem, ListTitle } from '../../components';
+import { useAuth } from '../../contexts/AuthContext';
+import { useMessage } from '../../contexts/MessageContext';
+import { useSettings } from '../../contexts/SettingsContext';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useAsyncAction } from '../../hooks/useAsyncAction';
+
+export default function SettingsScreen({ profileImageSource }: { profileImageSource: any }) {
+    const { theme } = useTheme();
+    const router = useRouter();
+    const { busy, runAction } = useAsyncAction();
+    const { showMessage } = useMessage();
+    const { user, refreshUser, logout } = useAuth();
+    const { updateTwoFactor } = useSettings();
+    const [twoFactor, setTwoFactor] = useState<boolean>(user?.mfa ?? false);
+
+    useEffect(() => {
+        (async () => {
+            await refreshUser();
+        })();
+    }, []); 
+    useEffect(() => {
+        setTwoFactor(user?.multi_factor_authentication ?? false);
+    }, [user]);
+
+    const handleLogout = async () => {
+        await logout();
+        router.replace('/login');
+    };
+
+    const handleTwoFactor = async (value) => {
+        return runAction(async () => {
+            setTwoFactor(value);
+            return updateTwoFactor(value).then((data) => {
+                if (value !== data.enabled) {
+                    setTwoFactor(data.enabled);
+                }
+                showMessage(data.message, 'success');
+                return refreshUser();
+            });
+        }, 2500).catch((err) => {
+            setTwoFactor(!value);
+        });
+    };
+
+    const joinDate = '12/25/2025';
+
+    return (
+        <FormScreen paddingTop="0">
+            {() => (
+                <ScrollView contentContainerStyle={theme.utils.pbsm}>
+                    <View style={[styles.headerRow, theme.utils.pmd]}>
+                        <Image
+                            source={user?.image ? {uri: user.image} : profileImageSource}
+                            style={[styles.image, {borderColor: theme.colors.primary}]}
+                            resizeMode="contain" />
+                        <View style={[styles.headerTextWrapper]}>
+                            <Text style={[styles.name, { color: theme.colors.text }]}>Michael VanDerwerker</Text>
+                            <Text style={[styles.description, { color: theme.colors.text }]}>Join Date: {joinDate}</Text>
+                        </View>
+                    </View>
+                    <ListTitle title="My Account"></ListTitle>
+                    <ListItem title="Edit Profile" onPress={() => router.push('/(settings)/profile')} />
+                    <ListItem title="Change Password" onPress={() => router.push('/(settings)/password')} />
+                    <ListItem
+                        title="Two Factor Authentication"
+                        subtitle={twoFactor ? 'Enabled' : 'Disabled'}
+                        toggle={twoFactor}
+                        onToggle={handleTwoFactor}
+                        busy={busy} />
+
+                    <ListTitle title="App"></ListTitle>
+                    <ListItem title="Appearance" subtitle={theme.mode} onPress={() => router.push('/(settings)/appearance')} />
+                    <ListItem title="Rate this App" />
+                    <ListItem title="Privacy Policy" subtitle={`Last Updated: ${AppConfig.privacyPolicyLastUpdated}`} onPress={() => router.push('/(settings)/privacy')} />
+                    <ListItem title={`About ${AppConfig.appName}`} onPress={() => router.push('/(settings)/about')} />
+                    <ListItem title={`Version: ${AppConfig.version ?? '1.0.0'}`} />
+
+                    <ListTitle title="Account Actions"></ListTitle>
+                    <ListItem title="Logout" onPress={handleLogout} danger />
+                </ScrollView>
+            )}
+        </FormScreen>
+    );
+}
+
+const styles = StyleSheet.create({
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    image: {
+        width: 86,
+        height: 86,
+        marginRight: 12,
+        borderWidth: 2,
+        borderRadius: 50,
+    },
+    headerTextWrapper: {
+        flexShrink: 1,
+    },
+    name: {
+        fontSize: 18,
+        marginBottom: 4,
+    },
+    description: {
+        fontSize: 14,
+    },
+});

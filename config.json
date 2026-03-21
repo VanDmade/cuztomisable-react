@@ -1,0 +1,7 @@
+{
+  "appName": "Cuztomisable",
+  "version": "1.0.0",
+  "defaultTheme": "light",
+  "supportEmail": "michaelvanderwerkerllc@gmail.com",
+  "baseUrl": "http://localhost:8000/api/"
+}

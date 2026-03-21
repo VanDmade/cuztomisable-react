@@ -1,0 +1,6 @@
+// src/theme/index.ts
+export * from './colors';
+export * from './spacing';
+export * from './theme';
+export * from './typography';
+
