@@ -107,31 +107,31 @@ export const AppConfig = {
     },
     onboarding: [
         {
-            image: 'assets/images/onboarding/slide1.png',
+            image: 'slide1',
             title: 'Welcome to Cuztomisable',
             subtitle: null,
             description: 'Build powerful apps with a streamlined foundation designed to help you launch faster than ever.',
         },
         {
-            image: 'assets/images/onboarding/slide2.png',
+            image: 'slide2',
             title: 'Idea to Product — Fast',
             subtitle: null,
             description: 'Turn concepts into real, working features in record time with tools built for rapid development.',
         },
         {
-            image: 'assets/images/onboarding/slide3.png',
+            image: 'slide3',
             title: 'Configure Everything',
             subtitle: 'Endless customization',
             description: 'A simple, flexible config file gives you control over authentication, roles, UI flows, and more. No boilerplate required.',
         },
         {
-            image: 'assets/images/onboarding/slide4.png',
+            image: 'slide4',
             title: 'Build Your Product, Not the Plumbing',
             subtitle: null,
             description: 'Skip repetitive setup like auth, user management, and permissions — Cuztomisable handles it for you.',
         },
         {
-            image: 'assets/images/onboarding/slide5.png',
+            image: 'slide5',
             title: 'Seamless Experience for Your Users',
             subtitle: null,
             description: 'Every screen is designed to be responsive, intuitive, and lightning-fast — right out of the box.',

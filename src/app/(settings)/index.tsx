@@ -10,8 +10,9 @@ import { useMessage } from '../../contexts/MessageContext';
 import { useSettings } from '../../contexts/SettingsContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
+import { images as themeImages } from '../../theme/images';
 
-export default function SettingsScreen({ profileImageSource }: { profileImageSource: any }) {
+export default function SettingsScreen({ profileImageSource }: { profileImageSource?: any }) {
     const { theme } = useTheme();
     const router = useRouter();
     const { busy, runAction } = useAsyncAction();
@@ -34,7 +35,7 @@ export default function SettingsScreen({ profileImageSource }: { profileImageSou
         router.replace('/login');
     };
 
-    const handleTwoFactor = async (value) => {
+    const handleTwoFactor = async (value: boolean) => {
         return runAction(async () => {
             setTwoFactor(value);
             return updateTwoFactor(value).then((data) => {
@@ -57,7 +58,7 @@ export default function SettingsScreen({ profileImageSource }: { profileImageSou
                 <ScrollView contentContainerStyle={theme.utils.pbsm}>
                     <View style={[styles.headerRow, theme.utils.pmd]}>
                         <Image
-                            source={user?.image ? {uri: user.image} : profileImageSource}
+                            source={user?.image ? {uri: user.image} : (profileImageSource || themeImages.profile)}
                             style={[styles.image, {borderColor: theme.colors.primary}]}
                             resizeMode="contain" />
                         <View style={[styles.headerTextWrapper]}>

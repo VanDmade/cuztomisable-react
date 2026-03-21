@@ -10,9 +10,10 @@ import { useSettings } from '../../contexts/SettingsContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import type { ImageChange } from '../../services/user.service';
+import { images as themeImages } from '../../theme/images';
 import { buildTimeZoneOptions } from '../../utils/timezones/options';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ defaultImageSource }: { defaultImageSource?: any }) {
     const { theme } = useTheme();
     const { busy, errors, runAction, setErrors } = useAsyncAction();
     const { showMessage } = useMessage();
@@ -28,9 +29,14 @@ export default function ProfileScreen() {
     const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const [timezone, setTimezone] = useState(defaultTimezone);
 
-    function handleImageChange(uri: string | null) {
-        setImage(uri);
-        setImageChange(uri === null ? 'clear' : 'new');
+    function handleImageChange(uri: string | string[] | null) {
+        if (Array.isArray(uri)) {
+            setImage(uri[0] ?? null);
+            setImageChange(uri.length === 0 ? 'clear' : 'new');
+        } else {
+            setImage(uri);
+            setImageChange(uri === null ? 'clear' : 'new');
+        }
     }
 
     const onSubmit = async () => {
@@ -61,7 +67,9 @@ export default function ProfileScreen() {
                             theme={theme}
                             value={image}
                             onChange={handleImageChange}
-                            size={128} />
+                            size={128}
+                            defaultImageSource={defaultImageSource ?? themeImages.profile}
+                        />
                     </View>
                     <FormInput
                         theme={theme}

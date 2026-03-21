@@ -1,7 +1,6 @@
 // Re-export all components
 export { BottomNav } from './BottomNav';
 export * from './Button';
-export { CuztomisableProvider } from './CuztomisableProvider';
 export * from './form';
 export * from './icon';
 export { KeyboardSpacer } from './KeyboardSpacer';

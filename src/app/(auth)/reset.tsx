@@ -9,8 +9,9 @@ import { usePassword } from '../../contexts/PasswordContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useCountdown } from '../../hooks/useCountdown';
+import { images as themeImages } from '../../theme/images';
 
-export default function ResetScreen({ logoSource }: { logoSource: any }) {
+export default function ResetScreen({ logoSource }: { logoSource?: any }) {
     const { theme } = useTheme();
     const router = useRouter();
     const { finalize, verify, resend } = usePassword();
@@ -33,7 +34,6 @@ export default function ResetScreen({ logoSource }: { logoSource: any }) {
     const onVerify = () => {
         return runAction(async () => {
             const data = await verify(token, code.trim());
-            // The code was verified
             setVerified(true);
         });
     };
@@ -42,7 +42,6 @@ export default function ResetScreen({ logoSource }: { logoSource: any }) {
         return runAction(async () => {
             const data = await resend(token);
             showMessage(data.message, 'success');
-            // Resets the countdown for use later
             reset();
         });
     };
@@ -59,7 +58,7 @@ export default function ResetScreen({ logoSource }: { logoSource: any }) {
                                 theme={theme}
                                 title="Reset Password"
                                 subtitle="Code has been sent!"
-                                logoSource={logoSource} />
+                                logoSource={logoSource || themeImages.logo} />
                             <View style={theme.styles.form}>
                                 <FormInput
                                     theme={theme}
@@ -94,7 +93,7 @@ export default function ResetScreen({ logoSource }: { logoSource: any }) {
                                 theme={theme}
                                 title="Reset Password"
                                 subtitle="Your code has been verified!"
-                                logoSource={logoSource} />
+                                logoSource={logoSource || themeImages.logo} />
                             <View style={theme.styles.form}>
                                 <FormInput
                                     theme={theme}

@@ -13,6 +13,7 @@ import {
 import { AppConfig } from '../../app.config';
 import { Button, OnboardingSlide } from '../../components';
 import { useOnboarding } from '../../hooks/useOnboarding';
+import { images as themeImages } from '../../theme/images';
 
 const { width } = Dimensions.get('window');
 type Slide = {
@@ -21,7 +22,19 @@ type Slide = {
     subtitle?: string | null;
     description: string;
 };
-const SLIDES: ReadonlyArray<Slide> = AppConfig.onboarding;
+// Map config image string to static import from theme images
+const onboardingImageMap: Record<string, any> = {
+    'slide1': themeImages.onboarding.slide1,
+    'slide2': themeImages.onboarding.slide2,
+    'slide3': themeImages.onboarding.slide3,
+    'slide4': themeImages.onboarding.slide4,
+    'slide5': themeImages.onboarding.slide5,
+};
+
+const SLIDES: ReadonlyArray<Slide> = AppConfig.onboarding.map(slide => ({
+    ...slide,
+    image: onboardingImageMap[slide.image] || null,
+}));
 
 export default function OnboardingScreen() {
     const router = useRouter();

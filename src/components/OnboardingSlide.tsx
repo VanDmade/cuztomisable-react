@@ -19,12 +19,15 @@ export function OnboardingSlide({
     description,
 }: OnboardingSlideProps) {
     const hasSubtitle = !!subtitle && subtitle.trim().length > 0;
+    console.log('asdfasdfasdf');
+    console.log(image);
     return (
         <View
             style={[theme.styles.container, theme.styles.rowFlexStart, styles.container]}
             accessible
             accessibilityRole="header">
             <Image source={image} style={[styles.image, theme.utils.mblg]} resizeMode="contain" />
+            <Text style={{ color: 'red', fontSize: 10, marginBottom: 8 }}>{JSON.stringify(image)}</Text>
             <Text style={[theme.typography.variants.title, theme.styles.textCenter]} accessibilityRole="header">
                 {title}
             </Text>

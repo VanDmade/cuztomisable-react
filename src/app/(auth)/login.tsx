@@ -10,8 +10,9 @@ import { useMessage } from '../../contexts/MessageContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useOnboarding } from '../../hooks/useOnboarding';
+import { images as themeImages } from '../../theme/images';
 
-export default function LoginScreen({ logoSource }: { logoSource: any }) {
+export default function LoginScreen({ logoSource }: { logoSource?: any }) {
     const { theme } = useTheme();
     const router = useRouter();
     const { login } = useAuth();
@@ -38,7 +39,7 @@ export default function LoginScreen({ logoSource }: { logoSource: any }) {
                     params: { token: data.token },
                 });
             } else {
-                router.push({ pathname: '/(tabs)/drinks' }); // You may want to make this configurable or handle post-login navigation in the app, not the package
+                router.push({ pathname: '/(tabs)/drinks' });
             }
         });
     };
@@ -51,7 +52,7 @@ export default function LoginScreen({ logoSource }: { logoSource: any }) {
                         theme={theme}
                         title="Login"
                         subtitle={`Welcome to ${AppConfig.appName ?? 'Cuztomisable'}!`}
-                        logoSource={logoSource} />
+                        logoSource={logoSource || themeImages.logo} />
                     <View style={theme.styles.form}>
                         <FormInput
                             theme={theme}

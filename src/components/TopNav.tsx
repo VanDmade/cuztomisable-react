@@ -12,9 +12,9 @@ type Props = {
     logo?: boolean;
     settings?: boolean;
     back?: boolean;
-    logoSource: any;
-    backImageSource: any;
-    profileImageSource: any;
+    logoSource?: any;
+    backImageSource?: any;
+    profileImageSource?: any;
 };
 
 export const TopNav: React.FC<Props> = ({

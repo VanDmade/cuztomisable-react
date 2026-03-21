@@ -5,8 +5,9 @@ import { Text, View } from 'react-native';
 import { AppConfig } from '../../app.config';
 import { FormHeader, FormScreen } from '../../components';
 import { useTheme } from '../../contexts/ThemeContext';
+import { images as themeImages } from '../../theme/images';
 
-export default function AboutScreen({ logoSource }: { logoSource: any }) {
+export default function AboutScreen({ logoSource }: { logoSource?: any }) {
     const { theme } = useTheme();
     const baseText = { color: theme.colors.text };
 
@@ -16,9 +17,9 @@ export default function AboutScreen({ logoSource }: { logoSource: any }) {
                 <View style={[theme.styles.container, theme.styles.background, theme.utils.pxmd]}>
                     <FormHeader
                         theme={theme}
-                        title={`About ${AppConfig.appName}`} 
+                        title={`About ${AppConfig.appName}`}
                         subtitle="Built to save you time. Designed to scale."
-                        logoSource={logoSource} />
+                        logoSource={logoSource || themeImages.logo} />
                     <View style={theme.styles.form}>
                         <Text style={baseText}>Cuztomisable is a flexible, developer-focused framework designed to help teams spin up complete user
                         and role-management systems in minutes instead of weeks. Built on a modern Laravel backend and crafted
