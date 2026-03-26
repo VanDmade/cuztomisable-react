@@ -1,22 +1,33 @@
 // api/api.ts
-import axios from 'axios';
-import { Platform } from 'react-native';
 
-import { AppConfig } from '../app.config';
+import axios, { AxiosInstance } from 'axios';
+import { Platform } from 'react-native';
 import { attachInterceptors } from './interceptors';
 
-// Derived values
-const APP_NAME = AppConfig.appName;
-const APP_VERSION = AppConfig.version;
-const DEVICE_TYPE = Platform.OS === 'android' ? 'Android' : (Platform.OS === 'ios' ? 'iOS' : 'Other');
+export type ApiConfig = {
+    baseUrl: string;
+    appName: string;
+    version: string;
+};
 
-export const api = axios.create({
-  baseURL: AppConfig.baseUrl,
-  headers: {
-    'X-App-Platform': 'mobile',
-    'User-Agent': `${APP_NAME}/${APP_VERSION} (${DEVICE_TYPE})`,
-    Accept: 'application/json',
-  },
-});
+export function createApi(config: ApiConfig): AxiosInstance {
+    const DEVICE_TYPE =
+        Platform.OS === 'android'
+            ? 'Android'
+            : Platform.OS === 'ios'
+            ? 'iOS'
+            : 'Other';
 
-attachInterceptors(api);
+    const api = axios.create({
+        baseURL: config.baseUrl,
+        headers: {
+            'X-App-Platform': 'mobile',
+            'User-Agent': `${config.appName}/${config.version} (${DEVICE_TYPE})`,
+            Accept: 'application/json',
+        },
+    });
+
+    attachInterceptors(api);
+
+    return api;
+}

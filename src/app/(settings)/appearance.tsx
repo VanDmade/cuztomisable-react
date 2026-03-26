@@ -1,12 +1,12 @@
 // src/app/(settings)/appearance.tsx
-import React from 'react';
 import { View } from 'react-native';
 
 import { FormHeader, FormRadio, FormScreen } from '../../components';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function AppearanceScreen() {
-    const { theme, appearance, setAppearance } = useTheme();
+    const theme = useTheme();
+    const { appearance, setAppearance } = theme;
 
     return (
         <FormScreen paddingTop="20">

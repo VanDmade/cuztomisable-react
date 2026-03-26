@@ -1,7 +1,7 @@
 // cuztomisable/config.ts
 // Utility to merge user config with package default config
 
-import { AppConfig, AppConfigType } from './app.config';
+import { AppConfig, AppConfigType } from './defaultConfig';
 
 /**
  * Deep merge two config objects. User config overrides defaults.

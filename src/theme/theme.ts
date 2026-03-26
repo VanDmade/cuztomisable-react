@@ -1,21 +1,48 @@
-// src/theme/theme.ts
+// cuztomisable/src/theme/theme.ts
+
+import merge from 'lodash.merge';
 import { StyleSheet } from 'react-native';
-import { AppConfig, ThemeMode } from '../app.config';
-import { getColors } from './colors';
-import { spacing, utils } from './spacing';
+import { color, Color, ThemeMode } from './colors';
+import { imageDefault } from './images';
+import { getLayout, makeCircleUtils, makeSpacingUtils } from './spacing';
 import { getTypography } from './typography';
 
-export const makeTheme = (mode: ThemeMode) => {
-    const colors = getColors(mode);
-    const typography = getTypography(mode);
-    const radius = AppConfig.layout.radius;
+export interface ThemeOverrides {
+    color?: Partial<Record<ThemeMode, Partial<Color>>>;
+    image?: Partial<typeof imageDefault>;
+    layout?: {
+        base?: number;
+        radius?: Partial<ReturnType<typeof getLayout>['radius']>;
+    };
+    typography?: Partial<ReturnType<typeof getTypography>>;
+}
+
+export const createTheme = (
+    mode: ThemeMode = 'light',
+    overrides: ThemeOverrides = {}
+) => {
+    const mergedColor = merge({}, color, overrides.color);
+    const colors = mergedColor[mode];
+    const images = merge({}, imageDefault, overrides.image);
+    const mergedLayout = getLayout({
+        base: overrides.layout?.base,
+        radius: overrides.layout?.radius,
+    });
+    const spacing = mergedLayout.spacing;
+    const radius = mergedLayout.radius;
+    const utils = {
+        ...makeSpacingUtils(mergedLayout),
+        ...makeCircleUtils(),
+    };
+    const typography = merge(
+        {},
+        getTypography(colors),
+        overrides.typography
+    );
+
     const styles = StyleSheet.create({
-        widthFull: {
-            width: '100%',
-        },
-        heightFull: {
-            height: '100%',
-        },
+        widthFull: { width: '100%' },
+        heightFull: { height: '100%' },
         form: {
             marginTop: 16,
             marginBottom: 12,
@@ -56,11 +83,11 @@ export const makeTheme = (mode: ThemeMode) => {
             alignItems: 'center',
         },
         disabledButton: {
-            backgroundColor: '#B0BEC5',
             opacity: 0.6,
         },
         buttonText: {
             color: colors.background,
+            // @ts-expect-error
             fontWeight: typography.weights.bold,
             fontSize: typography.sizes.sm,
         },
@@ -72,7 +99,6 @@ export const makeTheme = (mode: ThemeMode) => {
             height: 260,
             marginBottom: 24,
             alignSelf: 'center',
-            marginTop: 0,
         },
         backdrop: {
             flex: 1,
@@ -93,53 +119,22 @@ export const makeTheme = (mode: ThemeMode) => {
         alignCenter: { alignItems: 'center' },
         alignSelfCenter: { alignSelf: 'center' },
         justifyCenter: { justifyContent: 'center' },
-        fullCenter: {
-            textAlign: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
         textRight: { textAlign: 'right' },
         alignRight: { alignItems: 'flex-end' },
         alignSelfRight: { alignSelf: 'flex-end' },
         justifyRight: { justifyContent: 'flex-end' },
-        fullRight: {
-            textAlign: 'right',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-        },
         textLeft: { textAlign: 'left' },
         alignLeft: { alignItems: 'flex-start' },
         alignSelfLeft: { alignSelf: 'flex-start' },
         justifyLeft: { justifyContent: 'flex-start' },
-        fullLeft: {
-            textAlign: 'left',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-        },
-        flex: {
-            flex: 1,
-        },
-        positionAbsolute: {
-            position: 'absolute',
-        },
-        positionRelative: {
-            position: 'relative',
-        },
-        row: {
-            flexDirection: 'row',
-        },
-        rowSpaceBetween: {
-            justifyContent: 'space-between',
-        },
-        rowSpaceEvenly: {
-            justifyContent: 'space-evenly',
-        },
-        rowFlexStart: {
-            justifyContent: 'flex-start',
-        },
-        rowJustifyContentCenter: {
-            justifyContent: 'center',
-        },
+        flex: { flex: 1 },
+        positionAbsolute: { position: 'absolute' },
+        positionRelative: { position: 'relative' },
+        row: { flexDirection: 'row' },
+        rowSpaceBetween: { justifyContent: 'space-between' },
+        rowSpaceEvenly: { justifyContent: 'space-evenly' },
+        rowFlexStart: { justifyContent: 'flex-start' },
+        rowJustifyContentCenter: { justifyContent: 'center' },
         rowSelected: {
             backgroundColor: 'rgba(0,0,0,0.1)',
         },
@@ -149,11 +144,11 @@ export const makeTheme = (mode: ThemeMode) => {
         rowLabel: {
             fontSize: 16,
             fontWeight: '500',
-            color: '#111',
+            color: colors.text,
         },
         rowDesc: {
             fontSize: 13,
-            color: '#666',
+            color: colors.muted,
             marginTop: 2,
         },
         rowRight: {
@@ -165,7 +160,7 @@ export const makeTheme = (mode: ThemeMode) => {
         rowRightText: {
             fontSize: 16,
             fontWeight: '600',
-            color: '#111',
+            color: colors.text,
         },
         errorBorder: {
             borderColor: colors.danger || '#D32F2F',
@@ -177,11 +172,14 @@ export const makeTheme = (mode: ThemeMode) => {
             width: 1,
             alignSelf: 'stretch',
             marginHorizontal: 4,
+            backgroundColor: colors.border,
         },
     });
+
     return {
         mode,
-        colors,
+        color: colors,
+        image: images,
         spacing,
         radius,
         typography,
@@ -190,4 +188,4 @@ export const makeTheme = (mode: ThemeMode) => {
     } as const;
 };
 
-export type Theme = ReturnType<typeof makeTheme>;
+export type Theme = ReturnType<typeof createTheme>;

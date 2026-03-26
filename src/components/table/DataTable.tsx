@@ -3,10 +3,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, ScrollView, Text, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { api } from '../../api';
-import Button from '../../components/Button';
 import { Dropdown, type DropdownOption } from '../../components/form/Dropdown';
 import { FormInput } from '../../components/form/Input';
-import { useTheme } from '../../contexts/ThemeContext';
+import Button from '../../components/ui/Button';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export type DataTableColumn<T> = {
     key: string;
@@ -83,7 +83,7 @@ export function DataTable<T>({
     onRowPress,
     transformResponse,
 }: DataTableProps<T>) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const isClient = data !== undefined;
     const [rows, setRows] = useState<T[]>([]);
     const [loading, setLoading] = useState(false);
@@ -212,7 +212,7 @@ export function DataTable<T>({
     const canNext = !loading && (maxPage ? page < maxPage : pagedRows.length === pageSize);
 
     const renderHeader = () => (
-        <View style={[theme.styles.row, theme.utils.pysm, theme.utils.pxsm, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}>
+        <View style={[theme.styles.row, theme.utils.pysm, theme.utils.pxsm, { borderBottomWidth: 1, borderBottomColor: theme.color.border }]}>
             {columns.map((col) => (
                 <View
                     key={col.key}
@@ -222,7 +222,7 @@ export function DataTable<T>({
                         paddingRight: 12,
                         ...(col.headerStyle as object),
                     }}>
-                    <Text style={[theme.typography.variants.caption, { color: theme.colors.muted, textAlign: col.align ?? 'left' }, col.headerTextStyle]}>
+                    <Text style={[theme.typography.variants.caption, { color: theme.color.muted, textAlign: col.align ?? 'left' }, col.headerTextStyle]}>
                         {col.title}
                     </Text>
                 </View>
@@ -237,7 +237,7 @@ export function DataTable<T>({
                 theme.styles.row,
                 theme.utils.pysm,
                 theme.utils.pxsm,
-                { borderBottomWidth: 1, borderBottomColor: theme.colors.border },
+                { borderBottomWidth: 1, borderBottomColor: theme.color.border },
             ]}
             onTouchEnd={onRowPress ? () => onRowPress(item) : undefined}>
             {columns.map((col) => {
@@ -252,7 +252,7 @@ export function DataTable<T>({
                             ...(col.cellStyle as object),
                         }}>
                         {typeof value === 'string' || typeof value === 'number' || value === null || value === undefined ? (
-                            <Text style={[{ color: theme.colors.text, textAlign: col.align ?? 'left' }, col.cellTextStyle]}>
+                            <Text style={[{ color: theme.color.text, textAlign: col.align ?? 'left' }, col.cellTextStyle]}>
                                 {value ?? '--'}
                             </Text>
                         ) : (
@@ -300,15 +300,15 @@ export function DataTable<T>({
                     {renderHeader()}
                     {loading ? (
                         <View style={[theme.utils.pxmd, theme.utils.pymd]}>
-                            <Text style={{ color: theme.colors.muted }}>Loading...</Text>
+                            <Text style={{ color: theme.color.muted }}>Loading...</Text>
                         </View>
                     ) : error ? (
                         <View style={[theme.utils.pxmd, theme.utils.pymd]}>
-                            <Text style={{ color: theme.colors.danger }}>{error}</Text>
+                            <Text style={{ color: theme.color.danger }}>{error}</Text>
                         </View>
                     ) : pagedRows.length === 0 ? (
                         <View style={[theme.utils.pxmd, theme.utils.pymd]}>
-                            <Text style={{ color: theme.colors.muted }}>No {name.toLowerCase()} found.</Text>
+                            <Text style={{ color: theme.color.muted }}>No {name.toLowerCase()} found.</Text>
                         </View>
                     ) : (
                         <FlatList
@@ -322,7 +322,7 @@ export function DataTable<T>({
 
             <View style={[theme.styles.row, theme.styles.rowSpaceBetween, theme.utils.pxmd, theme.utils.pymd]}>
                 <View style={[theme.styles.row, { gap: 8, alignItems: 'center' }]}> 
-                    <Text style={{ color: theme.colors.muted }}>Rows</Text>
+                    <Text style={{ color: theme.color.muted }}>Rows</Text>
                     <Dropdown
                         theme={theme}
                         value={pageSize}
@@ -343,7 +343,7 @@ export function DataTable<T>({
                         disabled={!canPrev}
                         onPress={() => setPage((p) => Math.max(1, p - 1))}
                     />
-                    <Text style={{ color: theme.colors.muted }}>
+                    <Text style={{ color: theme.color.muted }}>
                         Page {page}{maxPage ? ` of ${maxPage}` : ''}
                     </Text>
                     <Button

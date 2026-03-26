@@ -13,15 +13,37 @@ A customizable React Native/Expo framework for mobile apps.
 npm install cuztomisable
 ```
 
-## Customizing Config
-```ts
-import { mergeConfig, AppConfig } from 'cuztomisable/config';
 
-const myConfig = mergeConfig({
-  appName: 'My Custom App',
-  colors: { light: { primary: '#123456' } },
+## Customizing Theme (Colors, Images, Spacing, etc.)
+
+You can override any part of the theme (colors, images, layout/spacing, typography) without modifying the package source. Use the `createTheme` function and pass an `overrides` object:
+
+```ts
+import { createTheme } from 'package/cuztomisable/src/theme/theme';
+
+const customTheme = createTheme('light', {
+  color: {
+    light: {
+      primary: '#00FF00', // custom primary color
+      // ...other color overrides
+    }
+  },
+  image: {
+    logo: require('./my-logo.png'),
+    // ...other image overrides
+  },
+  layout: {
+    base: 12, // custom spacing base
+    radius: { md: 16 } // custom radius
+  },
+  typography: {
+    fontFamily: { regular: 'Arial', bold: 'Arial-Bold' }
+    // ...other typography overrides
+  }
 });
 ```
+
+You only need to override what you want to change—everything else will fall back to the package defaults.
 
 ## License
 MIT

@@ -1,12 +1,11 @@
 // src/app/(tabs)/_layout.tsx
 import { Stack } from 'expo-router';
-import React from 'react';
 import { View } from 'react-native';
 
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function TabLayout() {
-    const { theme } = useTheme();
+    const theme = useTheme();
 
     return (
         <View style={[theme.styles.flex, theme.styles.background]}>

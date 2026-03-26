@@ -1,19 +1,19 @@
 // src/app/(settings)/index.tsx
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { AppConfig } from '../../app.config';
 import { FormScreen, ListItem, ListTitle } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
 import { useSettings } from '../../contexts/SettingsContext';
-import { useTheme } from '../../contexts/ThemeContext';
+import { AppConfig } from '../../defaultConfig';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function SettingsScreen({ profileImageSource }: { profileImageSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { busy, runAction } = useAsyncAction();
     const { showMessage } = useMessage();
@@ -59,11 +59,11 @@ export default function SettingsScreen({ profileImageSource }: { profileImageSou
                     <View style={[styles.headerRow, theme.utils.pmd]}>
                         <Image
                             source={user?.image ? {uri: user.image} : (profileImageSource || themeImages.profile)}
-                            style={[styles.image, {borderColor: theme.colors.primary}]}
+                            style={[styles.image, {borderColor: theme.color.primary}]}
                             resizeMode="contain" />
                         <View style={[styles.headerTextWrapper]}>
-                            <Text style={[styles.name, { color: theme.colors.text }]}>Michael VanDerwerker</Text>
-                            <Text style={[styles.description, { color: theme.colors.text }]}>Join Date: {joinDate}</Text>
+                            <Text style={[styles.name, { color: theme.color.text }]}>Michael VanDerwerker</Text>
+                            <Text style={[styles.description, { color: theme.color.text }]}>Join Date: {joinDate}</Text>
                         </View>
                     </View>
                     <ListTitle title="My Account"></ListTitle>

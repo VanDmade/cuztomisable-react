@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { FormToggle } from '../../components/form/Toggle';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 
 type Props = {
     title: string;
@@ -26,7 +26,7 @@ export const ListItem: React.FC<Props> = ({
     endItem = false,
     busy = false,
 }) => {
-const { theme } = useTheme();
+const theme = useTheme();
 const isToggleItem = toggle !== undefined && onToggle !== undefined;
 
 return (
@@ -40,21 +40,21 @@ return (
             subtitle ? theme.utils.pysm : theme.utils.pymd,
             !endItem && {
                 borderBottomWidth: 1,
-                borderBottomColor: theme.colors.border,
+                borderBottomColor: theme.color.border,
             },
         ]}>
         <View style={styles.leftSide}>
             <Text
                 style={[
                     styles.title,
-                    danger && { color: theme.colors.danger, fontWeight: '600' },
-                    { color: theme.colors.text },
+                    danger && { color: theme.color.danger, fontWeight: '600' },
+                    { color: theme.color.text },
                 ]}>{title}</Text>
             {subtitle ? (
             <Text
                 style={[
                     styles.subtitle,
-                    { color: theme.colors.primary },
+                    { color: theme.color.primary },
                 ]}>
                 {subtitle}
             </Text>

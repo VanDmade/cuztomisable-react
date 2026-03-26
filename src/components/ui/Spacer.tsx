@@ -1,22 +1,16 @@
-// src/components/KeyboardSpacer.tsx
+// src/components/ui/Spacer.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
-  /** Anything else that already pushes content up: 
-   *  e.g. KAV keyboardVerticalOffset + any sticky footer height + extraScrollHeight
-   */
-  subtract?: number;          // default 0
-  /** Upper bound on how tall the spacer can get */
-  cap?: number;               // default 160
-  /** Animate spacer height changes */
-  animated?: boolean;         // default true
-  /** If you’re not using SafeAreaProvider, set this false */
-  subtractSafeArea?: boolean; // default true
+  subtract?: number;
+  cap?: number;
+  animated?: boolean;
+  subtractSafeArea?: boolean;
 };
 
-export function KeyboardSpacer({
+export function Spacer({
   subtract = 0,
   cap = 300,
   animated = true,
@@ -33,7 +27,6 @@ export function KeyboardSpacer({
     const onShow = (e: any) => {
       const raw = e?.endCoordinates?.height ?? 0;
       let height = raw - (subtractSafeArea ? insets.bottom : 0) - (subtract || 0);
-      // clamp
       height = Math.max(0, Math.min(height, cap));
       if (animated) {
         Animated.timing(anim, { toValue: height, duration: 220, useNativeDriver: false }).start();

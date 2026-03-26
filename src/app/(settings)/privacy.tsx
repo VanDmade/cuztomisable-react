@@ -1,14 +1,13 @@
 // src/app/(settings)/privacy.tsx
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { AppConfig } from '../../app.config';
 import { FormHeader, FormScreen } from '../../components';
-import { useTheme } from '../../contexts/ThemeContext';
+import { AppConfig } from '../../defaultConfig';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function PrivacyScreen() {
-    const { theme } = useTheme();
-    const baseText = { color: theme.colors.text };
+    const theme = useTheme();
+    const baseText = { color: theme.color.text };
     return (
         <FormScreen paddingTop="20">
             {() => (

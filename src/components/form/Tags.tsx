@@ -1,7 +1,7 @@
 // src/components/form/Tags.tsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import { makeFormStyles } from './styles';
 
@@ -42,8 +42,7 @@ export const FormTags: React.FC<FormTagsProps> = ({
     suggestions = [],
     palette,
 }) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const [draftName, setDraftName] = useState('');
     const [draftColor, setDraftColor] = useState<string | undefined>(palette?.[0]);
@@ -135,7 +134,7 @@ export const FormTags: React.FC<FormTagsProps> = ({
                 <TextInput
                     value={draftName}
                     placeholder={placeholder}
-                    placeholderTextColor={activeTheme.colors.muted ?? '#AAA'}
+                    placeholderTextColor={activeTheme.color.muted ?? '#AAA'}
                     editable={!disabled}
                     style={[
                         formStyles.input,
@@ -153,7 +152,7 @@ export const FormTags: React.FC<FormTagsProps> = ({
                                 onPress={() => setDraftColor(color)}
                                 style={[
                                     styles.paletteDot,
-                                    { backgroundColor: color, borderColor: activeTheme.colors.border },
+                                    { backgroundColor: color, borderColor: activeTheme.color.border },
                                     draftColor === color && styles.paletteDotActive,
                                 ]}
                             />
@@ -162,7 +161,7 @@ export const FormTags: React.FC<FormTagsProps> = ({
                 ) : null}
             </View>
             {draftName && filteredSuggestions.length > 0 ? (
-                <View style={[styles.suggestions, { borderColor: activeTheme.colors.border }]}>
+                <View style={[styles.suggestions, { borderColor: activeTheme.color.border }]}>
                     <FlatList
                         keyboardShouldPersistTaps="handled"
                         data={filteredSuggestions}
@@ -175,7 +174,7 @@ export const FormTags: React.FC<FormTagsProps> = ({
                                     { opacity: pressed ? 0.85 : 1 },
                                 ]}
                             >
-                                <Text style={{ color: activeTheme.colors.text }}>{item.name}</Text>
+                                <Text style={{ color: activeTheme.color.text }}>{item.name}</Text>
                             </Pressable>
                         )}
                     />
@@ -196,7 +195,7 @@ export const FormTags: React.FC<FormTagsProps> = ({
                             key={`${tag.id}-${index}`}
                             style={[
                                 formStyles.chip,
-                                { backgroundColor: tag.color ?? activeTheme.colors.primary },
+                                { backgroundColor: tag.color ?? activeTheme.color.primary },
                             ]}
                             onPress={() => editTag(tag)}
                         >

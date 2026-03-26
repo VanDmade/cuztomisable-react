@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 
 type Props = {
     title: string;
@@ -13,15 +13,15 @@ export const ListTitle: React.FC<Props> = ({
     title,
     subtitle,
 }) => {
-    const { theme } = useTheme();
+    const theme = useTheme();
     return (
-        <View style={{backgroundColor: theme.colors.border}}>
+        <View style={{backgroundColor: theme.color.border}}>
             <Text
                 style={[
                     theme.utils.pysm,
                     theme.utils.pxmd,
                     {
-                        color: theme.colors.text,
+                        color: theme.color.text,
                         fontSize: theme.typography.sizes.xs,
                         letterSpacing: 0.8,
                     }

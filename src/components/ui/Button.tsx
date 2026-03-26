@@ -1,20 +1,20 @@
-// ...existing code...
-export { Button };
-// src/components/Button.tsx
-    import React, { useMemo } from 'react';
-    import {
-        ActivityIndicator,
-        GestureResponderEvent,
-        Pressable,
-        PressableProps,
-        StyleProp,
-        Text,
-        TextStyle,
-        View,
-        ViewStyle,
-    } from 'react-native';
-    import { AppConfig } from '../app.config';
-    import { makeTheme } from '../theme/theme';
+// src/components/ui/Button.tsx
+
+import React, { useMemo } from 'react';
+import {
+    ActivityIndicator,
+    GestureResponderEvent,
+    Pressable,
+    PressableProps,
+    StyleProp,
+    Text,
+    TextStyle,
+    View,
+    ViewStyle,
+} from 'react-native';
+
+import { useTheme } from '../../providers/ThemeProvider';
+import type { Color } from '../../theme/colors';
 
 type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'text';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -29,119 +29,48 @@ type ButtonIntent =
     | 'info'
     | 'warning';
 
-export type ThemeColors = {
-    primary: string;
-    secondary: string;
-    accent: string;
-    ternary: string;
-    danger: string;
-    success: string;
-    info: string;
-    warning: string;
-    light: string;
-    background: string;
-    surface: string;
-    text: string;
-    muted: string;
-    white: string;
-    border: string;
-    link: string;
-};
+export type ThemeColors = Color;
 
 type ButtonColors = {
-    /** Solid background (solid variant) */
     background?: string;
-    /** Text/icon color */
     foreground?: string;
-    /** Border color (outline variant) */
     border?: string;
-    /** Overlay shown while pressed (all variants) */
     pressedBackground?: string;
-    /** Disabled state background (solid) */
     disabledBackground?: string;
-    /** Disabled state text/icon color (all) */
     disabledForeground?: string;
 };
 
 export type ButtonProps = Omit<PressableProps, 'style' | 'children' | 'onPress'> & {
-    /** Text label (ignored if children provided) */
     title?: string;
-
-    /** Optional left / right content (icons, etc.) */
     left?: React.ReactNode;
     right?: React.ReactNode;
-
-    /** If provided, replaces the label row entirely */
     children?: React.ReactNode;
-
-    /** Visual styling */
     variant?: ButtonVariant;
-
-    /** Semantic color role */
     intent?: ButtonIntent;
-
-    /** Theme colors (optional; defaults to app config theme) */
     themeColors?: ThemeColors;
-
-    /** Size preset */
     size?: ButtonSize;
-
-    /** Radius for the container */
     radius?: number;
-
-    /** Full-width button */
-    fullWidth?: boolean; // use this to make the button span the parent's width
-
-    /** Disable interactions */
+    fullWidth?: boolean;
     disabled?: boolean;
-
-    /** Loading state (disables interactions + shows spinner) */
     loading?: boolean;
-
-    /** Spinner color override (defaults to computed foreground) */
     spinnerColor?: string;
-
-    /** Overrides (wins over intent+theme) */
     colors?: ButtonColors;
-
-    /** Padding override (if you don�t want size presets) */
     paddingHorizontal?: number;
     paddingVertical?: number;
-
-    /** Gap between left/content/right */
     gap?: number;
-
-    /** Alignment for content row */
     align?: 'left' | 'center' | 'right';
-
-    /** Text options */
     textStyle?: StyleProp<TextStyle>;
     textNumberOfLines?: number;
     textAllowFontScaling?: boolean;
-
-    /** Outer wrapper style */
     containerStyle?: StyleProp<ViewStyle>;
-
-    /** Inner pressable style */
     buttonStyle?: StyleProp<ViewStyle>;
-
-    /** Optional shadow toggle + styles */
     shadow?: boolean;
     shadowStyle?: StyleProp<ViewStyle>;
-
-    /** Minimum dimensions */
     minWidth?: number;
     minHeight?: number;
-
-    /** Hit slop convenience */
     hitSlopPadding?: number;
-
-    /** Press handler (ignored when disabled/loading) */
     onPress?: (event: GestureResponderEvent) => void;
 };
-
-// derive default colors from app config theme
-const DEFAULT_THEME_COLORS: ThemeColors = makeTheme(AppConfig.defaultTheme).colors as ThemeColors;
 
 const SIZE_PRESETS: Record<ButtonSize, { px: number; py: number; fontSize: number; minHeight: number }> = {
     xs: { px: 10, py: 6, fontSize: 12, minHeight: 32 },
@@ -157,6 +86,7 @@ function isNumber(v: unknown): v is number {
 
 function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: ButtonVariant) {
     const intentColor = theme[intent];
+
     if (variant === 'solid') {
         return {
             background: intentColor,
@@ -165,8 +95,9 @@ function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: 
             pressedBackground: 'rgba(0,0,0,0.10)',
             disabledBackground: theme.border,
             disabledForeground: theme.muted,
-        } satisfies Required<ButtonColors>;
+        };
     }
+
     if (variant === 'outline') {
         return {
             background: 'transparent',
@@ -175,8 +106,9 @@ function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: 
             pressedBackground: 'rgba(0,0,0,0.06)',
             disabledBackground: 'transparent',
             disabledForeground: theme.muted,
-        } satisfies Required<ButtonColors>;
+        };
     }
+
     if (variant === 'text') {
         return {
             background: 'transparent',
@@ -185,9 +117,9 @@ function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: 
             pressedBackground: 'rgba(0,0,0,0.04)',
             disabledBackground: 'transparent',
             disabledForeground: theme.muted,
-        } satisfies Required<ButtonColors>;
+        };
     }
-    // ghost
+
     return {
         background: 'transparent',
         foreground: intentColor,
@@ -195,7 +127,7 @@ function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: 
         pressedBackground: 'rgba(0,0,0,0.06)',
         disabledBackground: 'transparent',
         disabledForeground: theme.muted,
-    } satisfies Required<ButtonColors>;
+    };
 }
 
 export default function Button({
@@ -215,7 +147,7 @@ export default function Button({
     colors,
     paddingHorizontal,
     paddingVertical,
-    gap = 10,
+    gap,
     align = 'center',
     textStyle,
     textNumberOfLines = 1,
@@ -230,13 +162,17 @@ export default function Button({
     onPress,
     ...pressableProps
 }: ButtonProps) {
-    const theme = themeColors ?? DEFAULT_THEME_COLORS;
+    const { color, typography, spacing } = useTheme();
+
+    const theme = themeColors ?? color;
     const preset = SIZE_PRESETS[size];
+
+    const computedGap = gap ?? spacing.sm;
 
     const computed = useMemo(() => {
         const base = resolveIntentColors(theme, intent, variant);
 
-        const merged: Required<ButtonColors> = {
+        const merged = {
             background: colors?.background ?? base.background,
             foreground: colors?.foreground ?? base.foreground,
             border: colors?.border ?? base.border,
@@ -257,7 +193,6 @@ export default function Button({
             };
         }
 
-        // outline/text/ghost all render like text-ish controls but with different foreground/pressed tokens
         return {
             backgroundColor: 'transparent',
             borderColor: merged.border,
@@ -290,7 +225,7 @@ export default function Button({
                 accessibilityRole="button"
                 accessibilityState={{ disabled: disabled || loading }}
                 onPress={effectiveOnPress}
-                style={({ pressed }) => [
+                style={[
                     {
                         width: wantFull ? '100%' : undefined,
                         minWidth: isNumber(minWidth) ? minWidth : undefined,
@@ -313,11 +248,11 @@ export default function Button({
                         ]
                         : null,
                     buttonStyle,
-                ]}>
+                ]}
+            >
                 {({ pressed }) => (
                     <>
-                        {/* pressed overlay */}
-                        {pressed && !(disabled || loading) ? (
+                        {pressed && !(disabled || loading) && (
                             <View
                                 pointerEvents="none"
                                 style={{
@@ -325,41 +260,58 @@ export default function Button({
                                     backgroundColor: computed.pressedOverlay,
                                 }}
                             />
-                        ) : null}
+                        )}
+
                         <View
                             style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent,
-                                paddingHorizontal: isNumber(paddingHorizontal) ? paddingHorizontal : (variant === 'text' ? 0 : preset.px),
-                                paddingVertical: isNumber(paddingVertical) ? paddingVertical : (variant === 'text' ? 8 : preset.py),
+                                paddingHorizontal: isNumber(paddingHorizontal)
+                                    ? paddingHorizontal
+                                    : variant === 'text'
+                                    ? 0
+                                    : preset.px,
+                                paddingVertical: isNumber(paddingVertical)
+                                    ? paddingVertical
+                                    : variant === 'text'
+                                    ? 8
+                                    : preset.py,
                                 width: wantFull ? '100%' : undefined,
-                                gap,
-                            }}>
-                            {left ? <View style={{ alignItems: 'center' }}>{left}</View> : null}
+                                gap: computedGap,
+                            }}
+                        >
+                            {left && <View style={{ alignItems: 'center' }}>{left}</View>}
+
                             {children ? (
                                 children
-                            ) : (
+                            ) : title ? (
                                 <Text
-                                    allowFontScaling={textAllowFontScaling}
-                                    numberOfLines={textNumberOfLines}
                                     style={[
-                                        {
+                                        /*{
                                             color: computed.foregroundColor,
                                             fontSize: preset.fontSize,
-                                            fontWeight: '600',
-                                        },
+                                            fontWeight: typography.weights.medium,
+                                            flexShrink: 1,
+                                        },*/
                                         textStyle,
-                                    ]}>
-                                    {title ?? ''}
+                                    ]}
+                                    numberOfLines={textNumberOfLines}
+                                    allowFontScaling={textAllowFontScaling}
+                                >
+                                    {title}
                                 </Text>
-                            )}
-                            {right ? <View style={{ alignItems: 'center' }}>{right}</View> : null}
-                            {loading ? (
-                                <View style={{ marginLeft: 8 }}>
-                                    <ActivityIndicator size="small" color={spinnerColor ?? computed.foregroundColor} />
-                                </View>
                             ) : null}
+
+                            {right && <View style={{ alignItems: 'center' }}>{right}</View>}
+
+                            {loading && (
+                                <ActivityIndicator
+                                    size={preset.fontSize <= 14 ? 'small' : 'large'}
+                                    color={spinnerColor ?? computed.foregroundColor}
+                                    style={{ marginLeft: 8 }}
+                                />
+                            )}
                         </View>
                     </>
                 )}

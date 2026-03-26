@@ -1,7 +1,7 @@
 // src/components/form/Input.tsx
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Animated, Text, TextInput, TextInputProps, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import { makeFormStyles } from './styles';
 
@@ -26,8 +26,7 @@ export const FormInput: React.FC<FormInputProps> = ({
     style,
     ...inputProps
 }) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const fadeAnim = useRef(new Animated.Value(error ? 1 : 0)).current;
 
@@ -63,7 +62,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                     error && formStyles.errorBorder,
                     style,
                 ]}
-                placeholderTextColor={activeTheme.colors.muted ?? '#AAA'}
+                placeholderTextColor={activeTheme.color.muted ?? '#AAA'}
                 onChangeText={handleChangeText} />
             <Animated.View style={[formStyles.errorContainer, { opacity: fadeAnim }]}>
                 <Text style={activeTheme.typography.variants.error}>{error || ' '}</Text>

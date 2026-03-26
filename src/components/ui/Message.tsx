@@ -1,7 +1,7 @@
-// src/components/Message.tsx
+// src/components/ui/Message.tsx
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, ViewStyle } from 'react-native';
-import { useMessage } from '../contexts/MessageContext';
+import { useMessage } from '../../contexts/MessageContext';
 
 const colors = {
   success: '#388E3C',

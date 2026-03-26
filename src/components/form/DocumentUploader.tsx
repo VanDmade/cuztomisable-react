@@ -3,7 +3,7 @@ import type { DocumentPickerAsset } from 'expo-document-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import { makeFormStyles } from './styles';
 
@@ -37,8 +37,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
     multiple = false,
     allowedTypes,
 }) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
 
     const valueList = useMemo(() => {
@@ -109,7 +108,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
                     { opacity: pressed ? 0.85 : 1 },
                 ]}
             >
-                <Text style={{ color: activeTheme.colors.text }}>
+                <Text style={{ color: activeTheme.color.text }}>
                     {multiple ? 'Select Documents' : 'Select Document'}
                 </Text>
             </Pressable>
@@ -120,15 +119,15 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
                     {valueList.map((item) => (
                         <View key={item.uri} style={styles.listRow}>
                             <View style={styles.listLeft}>
-                                <Text style={{ color: activeTheme.colors.text }}>{item.name}</Text>
+                                <Text style={{ color: activeTheme.color.text }}>{item.name}</Text>
                                 {item.size ? (
-                                    <Text style={[styles.listMeta, { color: activeTheme.colors.muted }]}>
+                                    <Text style={[styles.listMeta, { color: activeTheme.color.muted }]}>
                                         {formatSize(item.size)}
                                     </Text>
                                 ) : null}
                             </View>
                             <Pressable onPress={() => handleRemove(item.uri)}>
-                                <Text style={{ color: activeTheme.colors.link, fontWeight: '600' }}>Remove</Text>
+                                <Text style={{ color: activeTheme.color.link, fontWeight: '600' }}>Remove</Text>
                             </Pressable>
                         </View>
                     ))}

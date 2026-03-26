@@ -2,11 +2,11 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useCallback, useMemo } from 'react';
 import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { makeFormStyles } from './styles';
 
 type Props = {
-    theme?: ReturnType<typeof import('../../theme/theme').makeTheme>;
+    theme?: ReturnType<typeof import('../../theme/theme').createTheme>;
     value?: string | string[] | null;
     onChange: (uri: string | string[] | null) => void;
     size?: number;
@@ -36,8 +36,7 @@ export const ImageUploader: React.FC<Props & { defaultImageSource: any }> = ({
     onThumbnailChange,
     defaultImageSource,
 }) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const defaultImage = defaultImageSource;
     const valueList = useMemo(() => {
@@ -137,7 +136,7 @@ export const ImageUploader: React.FC<Props & { defaultImageSource: any }> = ({
                                 height: size,
                                 borderRadius: circle ? (size / 2) : 8,
                                 borderWidth: 1,
-                                borderColor: activeTheme.colors.border,
+                                borderColor: activeTheme.color.border,
                             }} />
                     ) : (
                         valueList.map((uri) => (
@@ -149,7 +148,7 @@ export const ImageUploader: React.FC<Props & { defaultImageSource: any }> = ({
                                         height: size,
                                         borderRadius: circle ? (size / 2) : 8,
                                         borderWidth: 1,
-                                        borderColor: activeTheme.colors.border,
+                                        borderColor: activeTheme.color.border,
                                     }} />
                                 <Pressable
                                     onPress={() => handleRemoveAt(uri)}
@@ -157,14 +156,14 @@ export const ImageUploader: React.FC<Props & { defaultImageSource: any }> = ({
                                         position: 'absolute',
                                         top: 2,
                                         right: 2,
-                                        backgroundColor: activeTheme.colors.primary,
+                                        backgroundColor: activeTheme.color.primary,
                                     }, activeTheme.utils.circle28, activeTheme.styles.alignCenter, activeTheme.styles.justifyCenter]}>
                                     <Text style={{ color: 'white', fontSize: 18, lineHeight: 18 }}>×</Text>
                                 </Pressable>
                                 {onThumbnailChange ? (
                                     <Pressable
                                         onPress={() => onThumbnailChange(uri)}
-                                        style={[styles.thumbBadge, { backgroundColor: activeTheme.colors.primary }]}
+                                        style={[styles.thumbBadge, { backgroundColor: activeTheme.color.primary }]}
                                     >
                                         <Text style={styles.thumbBadgeText}>
                                             {effectiveThumbnail === uri ? 'Thumbnail' : 'Set Thumbnail'}
@@ -184,7 +183,7 @@ export const ImageUploader: React.FC<Props & { defaultImageSource: any }> = ({
                             height: size,
                             borderRadius: circle ? (size / 2) : 0,
                             borderWidth: 1,
-                            borderColor: activeTheme.colors.border,
+                            borderColor: activeTheme.color.border,
                         }} />
                     {valueList[0] && (
                         <Pressable
@@ -193,7 +192,7 @@ export const ImageUploader: React.FC<Props & { defaultImageSource: any }> = ({
                                 position: 'absolute',
                                 top: 2,
                                 right: 2,
-                                backgroundColor: activeTheme.colors.primary,
+                                backgroundColor: activeTheme.color.primary,
                             }, activeTheme.utils.circle28, activeTheme.styles.alignCenter, activeTheme.styles.justifyCenter]}>
                             <Text style={{ color: 'white', fontSize: 18, lineHeight: 18 }}>×</Text>
                         </Pressable>

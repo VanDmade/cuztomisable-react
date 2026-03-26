@@ -1,17 +1,17 @@
 // cuztomisable/app/(auth)/forgot.tsx
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button, FormHeader, FormInput, FormScreen, LinkText } from '../../components';
 import { useMessage } from '../../contexts/MessageContext';
 import { usePassword } from '../../contexts/PasswordContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function ForgotScreen({ logoSource }: { logoSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { request } = usePassword();
     const { busy, errors, runAction, setErrors } = useAsyncAction();

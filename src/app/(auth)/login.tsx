@@ -1,19 +1,19 @@
 // src/app/(auth)/login.tsx
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
-import { AppConfig } from '../../app.config';
 import { Button, FormHeader, FormInput, FormScreen, LinkText } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
-import { useTheme } from '../../contexts/ThemeContext';
+import { defaultConfig } from '../../defaultConfig';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useOnboarding } from '../../hooks/useOnboarding';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function LoginScreen({ logoSource }: { logoSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { login } = useAuth();
     const { showMessage } = useMessage();
@@ -51,7 +51,7 @@ export default function LoginScreen({ logoSource }: { logoSource?: any }) {
                     <FormHeader
                         theme={theme}
                         title="Login"
-                        subtitle={`Welcome to ${AppConfig.appName ?? 'Cuztomisable'}!`}
+                        subtitle={`Welcome to ${defaultConfig.appName ?? 'Cuztomisable'}!`}
                         logoSource={logoSource || themeImages.logo} />
                     <View style={theme.styles.form}>
                         <FormInput

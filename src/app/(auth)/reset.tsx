@@ -1,18 +1,19 @@
 // src/app/(auth)/reset.tsx
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
-import { Button, FormHeader, FormInput, FormScreen, LinkText, PasswordRequirements } from '../../components';
+import { Button, FormHeader, FormInput, FormScreen, LinkText } from '../../components';
+import { PasswordRequirements } from '../../components/ui/PasswordRequirements';
 import { useMessage } from '../../contexts/MessageContext';
 import { usePassword } from '../../contexts/PasswordContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useCountdown } from '../../hooks/useCountdown';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function ResetScreen({ logoSource }: { logoSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { finalize, verify, resend } = usePassword();
     const { showMessage } = useMessage();

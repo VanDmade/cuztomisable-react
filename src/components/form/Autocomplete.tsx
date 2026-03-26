@@ -1,7 +1,7 @@
 // src/components/form/Autocomplete.tsx
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import type { DropdownOption } from './Dropdown';
 import { makeFormStyles } from './styles';
@@ -39,8 +39,7 @@ export const FormAutocomplete = <T,>({
     fillOnSelect = true,
     filterOption,
 }: AutocompleteProps<T>) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const [internalValue, setInternalValue] = useState(value ?? '');
 
@@ -73,7 +72,7 @@ export const FormAutocomplete = <T,>({
             <TextInput
                 value={query}
                 placeholder={placeholder}
-                placeholderTextColor={activeTheme.colors.muted ?? '#AAA'}
+                placeholderTextColor={activeTheme.color.muted ?? '#AAA'}
                 editable={!disabled}
                 style={[
                     formStyles.input,
@@ -85,7 +84,7 @@ export const FormAutocomplete = <T,>({
             {helperText ? (<Text style={formStyles.helper}>{helperText}</Text>) : null}
             {error ? (<Text style={formStyles.error}>{error}</Text>) : null}
             {filtered.length > 0 ? (
-                <View style={[styles.list, { borderColor: activeTheme.colors.border, backgroundColor: activeTheme.colors.background }]}
+                <View style={[styles.list, { borderColor: activeTheme.color.border, backgroundColor: activeTheme.color.background }]}
                 >
                     <FlatList
                         keyboardShouldPersistTaps="handled"
@@ -107,9 +106,9 @@ export const FormAutocomplete = <T,>({
                                     { opacity: pressed ? 0.85 : 1 },
                                 ]}
                             >
-                                <Text style={{ color: activeTheme.colors.text }}>{item.label}</Text>
+                                <Text style={{ color: activeTheme.color.text }}>{item.label}</Text>
                                 {!!item.description && (
-                                    <Text style={[styles.description, { color: activeTheme.colors.muted }]}>
+                                    <Text style={[styles.description, { color: activeTheme.color.muted }]}>
                                         {item.description}
                                     </Text>
                                 )}

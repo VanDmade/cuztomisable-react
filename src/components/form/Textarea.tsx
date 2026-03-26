@@ -1,7 +1,7 @@
 // src/components/form/Textarea.tsx
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Animated, Text, TextInput, TextInputProps, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import { makeFormStyles } from './styles';
 
@@ -26,8 +26,7 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
     style,
     ...inputProps
 }) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const fadeAnim = useRef(new Animated.Value(error ? 1 : 0)).current;
 
@@ -61,7 +60,7 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
                     error && formStyles.errorBorder,
                     style,
                 ]}
-                placeholderTextColor={activeTheme.colors.muted ?? '#AAA'}
+                placeholderTextColor={activeTheme.color.muted ?? '#AAA'}
                 onChangeText={handleChangeText}
             />
             <Animated.View style={[formStyles.errorContainer, { opacity: fadeAnim }]}>

@@ -1,6 +1,7 @@
 // src/app/(onboarding)/index.tsx
+
 import { useRouter } from 'expo-router';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Dimensions,
     FlatList,
@@ -10,39 +11,43 @@ import {
     View,
 } from 'react-native';
 
-import { AppConfig } from '../../app.config';
-import { Button, OnboardingSlide } from '../../components';
+import { Button } from '../../components';
+import { Slide as OnboardingSlide } from '../../components/onboarding/Slide';
 import { useOnboarding } from '../../hooks/useOnboarding';
-import { images as themeImages } from '../../theme/images';
+import { useConfig } from '../../providers/ConfigProvider';
+import { useTheme } from '../../providers/ThemeProvider';
 
 const { width } = Dimensions.get('window');
+
 type Slide = {
     image: any;
     title: string;
     subtitle?: string | null;
     description: string;
 };
-// Map config image string to static import from theme images
-const onboardingImageMap: Record<string, any> = {
-    'slide1': themeImages.onboarding.slide1,
-    'slide2': themeImages.onboarding.slide2,
-    'slide3': themeImages.onboarding.slide3,
-    'slide4': themeImages.onboarding.slide4,
-    'slide5': themeImages.onboarding.slide5,
-};
-
-const SLIDES: ReadonlyArray<Slide> = AppConfig.onboarding.map(slide => ({
-    ...slide,
-    image: onboardingImageMap[slide.image] || null,
-}));
 
 export default function OnboardingScreen() {
     const router = useRouter();
     const listRef = useRef<FlatList<Slide>>(null);
+
     const [index, setIndex] = useState(0);
     const [skipDisabled, setSkipDisabled] = useState(true);
-    const isLast = index === SLIDES.length - 1;
+
     const { markComplete } = useOnboarding();
+
+    const config = useConfig();
+    const { image } = useTheme();
+
+    const slides: Slide[] = useMemo(() => {
+        const onboarding = config.onboarding ?? [];
+
+        return onboarding.map((slide) => ({
+            ...slide,
+            image: image.onboarding?.[slide.image] ?? null,
+        }));
+    }, [config.onboarding, image]);
+
+    const isLast = index === slides.length - 1;
 
     useEffect(() => {
         const timer = setTimeout(() => setSkipDisabled(false), 5000);
@@ -62,16 +67,15 @@ export default function OnboardingScreen() {
         }
     };
 
-    const onSkip = () => { completeOnboarding(); };
-    const onDone = () => { completeOnboarding(); };
+    const onSkip = () => completeOnboarding();
+    const onDone = () => completeOnboarding();
 
     const completeOnboarding = async () => {
         try {
             await markComplete();
         } catch {
-            // ignore storage errors; still navigate
+            // ignore storage errors
         }
-        // Replace with your real post-onboarding route:
         router.replace('/(auth)/login');
     };
 
@@ -94,22 +98,28 @@ export default function OnboardingScreen() {
                 description={item.description} />
         </View>
     );
-    const Dots = useMemo(() => (
-        <View style={styles.dotsRow} accessibilityRole="tablist">
-            {SLIDES.map((_, i) => (
-                <View
-                    key={`dot-${i}`}
-                    style={[styles.dot, i === index && styles.dotActive]}
-                    accessibilityRole="tab"
-                    accessibilityState={{ selected: i === index }} />
-            ))}
-        </View>
-    ), [index]);
+
+    const Dots = useMemo(
+        () => (
+            <View style={styles.dotsRow} accessibilityRole="tablist">
+                {slides.map((_, i) => (
+                    <View
+                        key={`dot-${i}`}
+                        style={[styles.dot, i === index && styles.dotActive]}
+                        accessibilityRole="tab"
+                        accessibilityState={{ selected: i === index }}
+                    />
+                ))}
+            </View>
+        ),
+        [index, slides]
+    );
+
     return (
         <View style={styles.screen}>
             <FlatList
                 ref={listRef}
-                data={SLIDES}
+                data={slides}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 horizontal
@@ -118,7 +128,9 @@ export default function OnboardingScreen() {
                 onMomentumScrollEnd={onMomentumEnd}
                 scrollEventThrottle={16}
                 bounces={false} />
+
             {Dots}
+
             <View style={styles.footer}>
                 {!isLast && !skipDisabled ? (
                     <Button
@@ -127,10 +139,12 @@ export default function OnboardingScreen() {
                         onPress={onSkip}
                         testID="btn-skip"
                         containerStyle={styles.skipBtn}
-                        align="center" />
+                        align="center"
+                    />
                 ) : (
                     <View />
                 )}
+
                 {!isLast ? (
                     <Button
                         title="Next"
@@ -139,16 +153,17 @@ export default function OnboardingScreen() {
                         testID="btn-next"
                         intent="secondary"
                         containerStyle={styles.nextBtn}
-                        align="center" />
+                        align="center"
+                    />
                 ) : (
-                    // edge-to-edge Done button: cancel footer padding with negative marginHorizontal
                     <Button
                         title="Done"
                         variant="solid"
                         onPress={onDone}
                         testID="btn-done"
                         containerStyle={styles.nextBtn}
-                        align="center" />
+                        align="center"
+                    />
                 )}
             </View>
         </View>
@@ -158,7 +173,6 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     dotsRow: {
         flexDirection: 'row',
@@ -190,34 +204,5 @@ const styles = StyleSheet.create({
     },
     nextBtn: {
         flex: 1,
-    },
-    footerSpacer: {
-        height: 40,
-    },
-    primaryBtn: {
-        flex: 1,
-        height: 44,
-        borderRadius: 12,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#111827',
-    },
-    primaryBtnText: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#fff',
-    },
-    textBtn: {
-        paddingHorizontal: 12,
-        paddingVertical: 10,
-        minWidth: 124,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    textBtnText: {
-        fontSize: 15,
-        fontWeight: '600',
-        color: '#111827',
-        opacity: 0.9,
     },
 });

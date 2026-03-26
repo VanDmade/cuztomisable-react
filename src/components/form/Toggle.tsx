@@ -9,7 +9,7 @@ import {
     View,
 } from 'react-native';
 
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { makeFormStyles } from './styles';
 
 type FormToggleProps = {
@@ -29,7 +29,7 @@ export const FormToggle: React.FC<FormToggleProps> = ({
     error,
     disabled = false,
 }) => {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const formStyles = React.useMemo(() => makeFormStyles(theme), [theme]);
 
     const hasError = !!(error && (Array.isArray(error) ? error.length : true));
@@ -66,10 +66,10 @@ export const FormToggle: React.FC<FormToggleProps> = ({
                 value={value}
                 onValueChange={onValueChange}
                 disabled={disabled}
-                thumbColor={Platform.OS === 'android' ? (value ? theme.colors.primary : '#f4f3f4') : undefined}
+                thumbColor={Platform.OS === 'android' ? (value ? theme.color.primary : '#f4f3f4') : undefined}
                 trackColor={{
-                    false: hasError ? (theme.colors.danger + '55') : (theme.colors.border ?? '#CCC'),
-                    true: hasError ? theme.colors.danger : (theme.colors.primary + '99'),
+                    false: hasError ? (theme.color.danger + '55') : (theme.color.border ?? '#CCC'),
+                    true: hasError ? theme.color.danger : (theme.color.primary + '99'),
                 }}
                 style={{ height: 22 }} />
             </Pressable>

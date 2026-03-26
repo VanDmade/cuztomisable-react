@@ -1,16 +1,16 @@
 // src/app/(settings)/password.tsx
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button, FormHeader, FormInput, FormScreen, PasswordRequirements } from '../../components';
 import { useMessage } from '../../contexts/MessageContext';
 import { useSettings } from '../../contexts/SettingsContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function PasswordScreen() {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { busy, errors, runAction, setErrors } = useAsyncAction();
     const { changePassword } = useSettings();

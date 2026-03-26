@@ -1,20 +1,19 @@
 // src/app/(settings)/_layout.tsx
 import { Stack } from 'expo-router';
-import React from 'react';
 import { View } from 'react-native';
 
-import { TopNav } from '../../components/TopNav';
+import { Header } from '../../components/navigation/Header';
 import { SettingsProvider } from '../../contexts/SettingsContext';
-import { useTheme } from '../../contexts/ThemeContext';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function SettingsLayout({ logoSource, backImageSource, profileImageSource }: { logoSource?: any, backImageSource?: any, profileImageSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
 
     return (
         <SettingsProvider>
             <View style={[theme.styles.flex, theme.styles.background]}>
-                <TopNav
+                <Header
                     title="Settings"
                     back
                     logoSource={logoSource || themeImages.logo}
@@ -28,7 +27,7 @@ export default function SettingsLayout({ logoSource, backImageSource, profileIma
                             headerShown: false,
                             animation: 'fade',
                             animationDuration: 250,
-                            contentStyle: { backgroundColor: theme.colors.background },
+                            contentStyle: { backgroundColor: theme.color.background },
                         }}/>
                 </View>
             </View>

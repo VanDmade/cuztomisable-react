@@ -1,27 +1,17 @@
 {
-  // No extends to avoid inheriting incompatible options
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "./src",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ES2019",
+    "moduleResolution": "Node",
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "composite": false,
-    "noEmit": false,
-    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": "src",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "react-native",
-    "jsxFactory": "React.createElement",
-    "lib": ["esnext"],
-    "skipLibCheck": true
+    "isolatedModules": true,
+    "noEmit": false
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "include": ["src"]
 }

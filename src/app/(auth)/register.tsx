@@ -1,17 +1,18 @@
 // src/app/(auth)/register.tsx
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
-import { Button, FormHeader, FormInput, FormScreen, LinkText, PasswordRequirements, Phone } from '../../components';
+import { Button, FormHeader, FormInput, FormScreen, LinkText, Phone } from '../../components';
+import { PasswordRequirements } from '../../components/ui/PasswordRequirements';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function RegisterScreen({ logoSource }: { logoSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { register } = useAuth();
     const [name, setName] = useState('');

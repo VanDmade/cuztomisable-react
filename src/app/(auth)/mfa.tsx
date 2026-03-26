@@ -1,20 +1,20 @@
 // src/app/(auth)/mfa.tsx
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button, FormCheckbox, FormHeader, FormInput, FormScreen, LinkText } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useCountdown } from '../../hooks/useCountdown';
-import { images as themeImages } from '../../theme/images';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 type Channel = 'email' | 'sms';
 
 export default function MfaScreen({ logoSource }: { logoSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const router = useRouter();
     const { verifyMfaToken, sendMfaCode, finalizeMfa } = useAuth();
     const { busy, errors, runAction, setErrors } = useAsyncAction();

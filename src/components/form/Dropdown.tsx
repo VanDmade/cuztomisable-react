@@ -13,7 +13,7 @@ import {
     View,
     ViewStyle,
 } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import { makeFormStyles } from './styles';
 
@@ -64,8 +64,7 @@ export const Dropdown = forwardRef(function DropdownInner<T = any>(
     }: DropdownProps<T>,
     ref: React.Ref<DropdownHandle>
 ) {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const [visible, setVisible] = useState(false);
     const [height, setHeight] = useState(0);
@@ -121,7 +120,7 @@ export const Dropdown = forwardRef(function DropdownInner<T = any>(
                     style={[
                         styles.field,
                         activeTheme.utils.pxsm,
-                        bordered && [{ borderWidth: 1, borderColor: activeTheme.colors.border }, formStyles.input, activeTheme.utils.pxmd],
+                        bordered && [{ borderWidth: 1, borderColor: activeTheme.color.border }, formStyles.input, activeTheme.utils.pxmd],
                         fieldStyle,
                         containerStyle,
                         disabled && formStyles.inputDisabled,
@@ -130,7 +129,7 @@ export const Dropdown = forwardRef(function DropdownInner<T = any>(
                     disabled={disabled}>
                     <Text
                         style={[
-                            { color: activeTheme.colors.text },
+                            { color: activeTheme.color.text },
                             !selectedOption && activeTheme.typography.variants.placeholder,
                             textStyle,
                         ]}
@@ -149,12 +148,12 @@ export const Dropdown = forwardRef(function DropdownInner<T = any>(
                     style={[
                         styles.dropdown,
                         activeTheme.utils.pblg,
-                        { transform: [{ translateY: sheetY }], backgroundColor: activeTheme.colors.background },
+                        { transform: [{ translateY: sheetY }], backgroundColor: activeTheme.color.background },
                     ]}>
                     <View style={[styles.dropdownHeader, activeTheme.utils.pxmd, activeTheme.utils.pymd]}>
-                        <Text style={[styles.dropdownHeaderText, { color: activeTheme.colors.text }]}>{modalTitle}</Text>
+                        <Text style={[styles.dropdownHeaderText, { color: activeTheme.color.text }]}>{modalTitle}</Text>
                         <TouchableOpacity onPress={close}>
-                            <Text style={{ color: activeTheme.colors.link, fontWeight: '600' }}>Close</Text>
+                            <Text style={{ color: activeTheme.color.link, fontWeight: '600' }}>Close</Text>
                         </TouchableOpacity>
                     </View>
                     <FlatList
@@ -169,18 +168,18 @@ export const Dropdown = forwardRef(function DropdownInner<T = any>(
                                     activeTheme.utils.pymd,
                                     activeTheme.utils.pxmd,
                                     value === item.value && activeTheme.styles.rowSelected,
-                                    { color: activeTheme.colors.text },
+                                    { color: activeTheme.color.text },
                                 ]}
                                 onPress={() => {
                                     onSelect(item.value);
                                     close();
                                 }}>
                                  <View style={[activeTheme.styles.rowLeft]}>
-                                    <Text style={[activeTheme.styles.rowLabel, textStyle, { color: activeTheme.colors.text }]}>{item.label}</Text>
-                                    {!!item.description && <Text style={[activeTheme.styles.rowDesc, subTextStyle, { color: activeTheme.colors.muted }]}>{item.description}</Text>}
+                                    <Text style={[activeTheme.styles.rowLabel, textStyle, { color: activeTheme.color.text }]}>{item.label}</Text>
+                                    {!!item.description && <Text style={[activeTheme.styles.rowDesc, subTextStyle, { color: activeTheme.color.muted }]}>{item.description}</Text>}
                                 </View>
                                  <View style={[activeTheme.styles.rowRight]}>
-                                    {!!item.rightText && <Text style={[activeTheme.styles.rowRightText, textStyle, { color: activeTheme.colors.text }]}>{item.rightText}</Text>}
+                                    {!!item.rightText && <Text style={[activeTheme.styles.rowRightText, textStyle, { color: activeTheme.color.text }]}>{item.rightText}</Text>}
                                 </View>
                             </TouchableOpacity>
                         )} />

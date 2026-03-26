@@ -3,10 +3,10 @@ import { Stack } from 'expo-router';
 import { View } from 'react-native';
 
 import { PasswordProvider } from '../../contexts/PasswordContext';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 
 export default function AuthLayout() {
-    const { theme } = useTheme();
+    const theme = useTheme();
     return (
         <PasswordProvider>
             <View style={[theme.styles.flex, theme.styles.background]}>

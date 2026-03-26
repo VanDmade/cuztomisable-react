@@ -1,7 +1,7 @@
 // src/components/form/MultiEntry.tsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { Theme } from '../../theme/theme';
 import { makeFormStyles } from './styles';
 
@@ -71,8 +71,7 @@ export const FormMultiEntry = <T extends MultiEntryItem>({
     onAdd,
     onRemove,
 }: MultiEntryProps<T>) => {
-    const { theme: contextTheme } = useTheme();
-    const activeTheme = theme ?? contextTheme;
+    const activeTheme = theme ?? useTheme();
     const formStyles = useMemo(() => makeFormStyles(activeTheme), [activeTheme]);
     const [asking, setAsking] = useState<Record<string, boolean>>({});
     const [counter, setCounter] = useState(0);
@@ -180,7 +179,7 @@ export const FormMultiEntry = <T extends MultiEntryItem>({
                             disabled={disabled}
                             style={({ pressed }) => [
                                 styles.addButton,
-                                { backgroundColor: activeTheme.colors.primary, opacity: pressed ? 0.85 : 1 },
+                                { backgroundColor: activeTheme.color.primary, opacity: pressed ? 0.85 : 1 },
                                 disabled && styles.disabledButton,
                             ]}
                         >
@@ -203,7 +202,7 @@ export const FormMultiEntry = <T extends MultiEntryItem>({
                                 <View style={styles.entryControls}>
                                     {steps ? (
                                         <View style={styles.stepBadge}>
-                                            <Text style={{ color: activeTheme.colors.text }}>
+                                            <Text style={{ color: activeTheme.color.text }}>
                                                 {item.steps ?? index + 1}
                                             </Text>
                                         </View>
@@ -240,7 +239,7 @@ export const FormMultiEntry = <T extends MultiEntryItem>({
                                         disabled={!canRemove || disabled}
                                         style={({ pressed }) => [
                                             styles.removeButton,
-                                            { backgroundColor: activeTheme.colors.danger, opacity: pressed ? 0.85 : 1 },
+                                            { backgroundColor: activeTheme.color.danger, opacity: pressed ? 0.85 : 1 },
                                             (!canRemove || disabled) && styles.disabledButton,
                                         ]}
                                     >
@@ -282,7 +281,7 @@ export const FormMultiEntry = <T extends MultiEntryItem>({
                     disabled={disabled}
                     style={({ pressed }) => [
                         styles.addButton,
-                        { backgroundColor: activeTheme.colors.primary, opacity: pressed ? 0.85 : 1 },
+                        { backgroundColor: activeTheme.color.primary, opacity: pressed ? 0.85 : 1 },
                         disabled && styles.disabledButton,
                     ]}
                 >

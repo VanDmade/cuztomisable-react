@@ -9,7 +9,7 @@ import {
     View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 
 type Props = {
     children: (api: {}) => React.ReactNode;
@@ -26,12 +26,11 @@ export function FormScreen({
     paddingTop = 60,
     centered = false,
 }: Props) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const insets = useSafeAreaInsets();
     const scrollRef = useRef<ScrollView>(null);
     const [height, setHeight] = useState(0);
-    const effectiveBackgroundColor = backgroundColor ?? theme.colors.background;
-
+    const effectiveBackgroundColor = backgroundColor ?? theme.color.background;
     useEffect(() => {
         const onShow = (e: KeyboardEvent) => setHeight(Math.max(0, e.endCoordinates?.height || 0));
         const onHide = () => setHeight(0);

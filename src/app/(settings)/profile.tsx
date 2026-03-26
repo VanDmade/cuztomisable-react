@@ -1,5 +1,5 @@
 // src/app/(settings)/profile.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button, FormInput, FormScreen, ImageUploader, Phone } from '../../components';
@@ -7,14 +7,14 @@ import { Dropdown } from '../../components/form/Dropdown';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
 import { useSettings } from '../../contexts/SettingsContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
+import { useTheme } from '../../providers/ThemeProvider';
 import type { ImageChange } from '../../services/user.service';
-import { images as themeImages } from '../../theme/images';
+import { imageDefault as themeImages } from '../../theme/images';
 import { buildTimeZoneOptions } from '../../utils/timezones/options';
 
 export default function ProfileScreen({ defaultImageSource }: { defaultImageSource?: any }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const { busy, errors, runAction, setErrors } = useAsyncAction();
     const { showMessage } = useMessage();
     const { saveProfile } = useSettings();

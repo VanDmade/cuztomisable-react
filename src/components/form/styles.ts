@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import type { Theme } from '../../theme/theme';
 
 export const makeFormStyles = (theme: Theme) => {
-    const danger = theme.colors.danger ?? '#D32F2F';
+    const danger = theme.color.danger ?? '#D32F2F';
     return StyleSheet.create({
         wrapper: {
             width: '100%',
@@ -13,17 +13,17 @@ export const makeFormStyles = (theme: Theme) => {
             fontSize: 14,
             fontWeight: '600',
             marginBottom: 6,
-            color: theme.colors.text,
+            color: theme.color.text,
         },
         inlineLabel: {
             fontSize: 15,
             fontWeight: '500',
-            color: theme.colors.text,
+            color: theme.color.text,
         },
         helper: {
             marginTop: 2,
             fontSize: 12,
-            color: theme.colors.muted ?? '#777',
+            color: theme.color.muted ?? '#777',
         },
         error: {
             marginTop: 4,
@@ -48,20 +48,20 @@ export const makeFormStyles = (theme: Theme) => {
         input: {
             fontSize: theme.typography.sizes.xs,
             borderWidth: 1,
-            borderColor: theme.colors.border,
+            borderColor: theme.color.border,
             borderRadius: 10,
             padding: 16,
-            color: theme.colors.text,
-            backgroundColor: theme.colors.background,
+            color: theme.color.text,
+            backgroundColor: theme.color.background,
         },
         inputDisabled: {
-            backgroundColor: theme.colors.white,
-            color: theme.colors.muted,
+            backgroundColor: theme.color.white,
+            color: theme.color.muted,
         },
         chevron: {
             marginLeft: 8,
             fontSize: 12,
-            color: theme.colors.text,
+            color: theme.color.text,
         },
         divider: {
             width: 1,

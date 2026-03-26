@@ -5,10 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "dist/app",
-    "app.config.ts",
-    "config.ts"
+    "dist"
   ],
   "author": "Michael VanDerwerker LLC",
   "license": "MIT",
@@ -25,10 +22,17 @@
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-native": ">=0.71.0"
+    "react-native": ">=0.71.0",
+    "expo": "*"
   },
   "scripts": {
-    "postinstall": "node ./scripts/generate-cuztomisable-routes.js",
     "build:watch": "tsc --project tsconfig.build.json --watch"
+  },
+  "devDependencies": {
+    "@types/lodash.merge": "^4.6.9"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./app/*": "./dist/app/*"
   }
 }

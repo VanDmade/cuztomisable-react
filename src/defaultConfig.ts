@@ -1,14 +1,10 @@
-// cuztomisable/app.config.ts
+// cuztomisable/defaultConfig.ts
 // Application configuration and constants.
 export type ThemeMode = 'light' | 'dark';
 
-export const AppConfig = {
-    assets: {
-        logo: 'assets/images/logo.png',
-        profile: 'assets/images/profile.png',
-        loading: 'assets/images/loading.png',
-        back: 'assets/images/back.png',
-    },
+export const defaultConfig = {
+    // Layout/spacing base value for theme
+    base: 8,
     appName: 'Cuztomisable',
     version: 'v1.0',
     locale: 'en-US',
@@ -30,77 +26,6 @@ export const AppConfig = {
         { label: 'United Kingdom', code: 'GB', dialCode: 44 },
         { label: 'Australia', code: 'AU', dialCode: 61 },
     ],
-    colors: {
-        light: {
-            primary: '#F97316',
-            secondary: '#9A3412',
-            accent: '#FB923C',
-            ternary: '#3B82F6',
-            danger: '#C62828',
-            success: '#4CAF50',
-            info: '#0284C7',
-            warning: '#DC6A00',
-            light: '#FFF8F3',
-            background: '#FFFFFF',
-            surface: '#FFFFFF',
-            text: '#1A1A1A',
-            muted: '#6B6B6B',
-            white: '#FFFFFF',
-            border: '#E6E6E6',
-            link: '#0A66C2',
-        },
-        dark: {
-            primary: '#F97316',
-            secondary: '#FB923C',
-            accent: '#FFB777',
-            ternary: '#4A2A1C',
-            danger: '#EF5350',
-            success: '#81C784',
-            info: '#29B6F6',
-            warning: '#FFB74D',
-            light: '#2A2A2A',
-            background: '#121212',
-            surface: '#1E1E1E',
-            text: '#F1F1F1',
-            muted: '#6B6B6B',
-            white: '#FFFFFF',
-            border: '#3A3A3A',
-            link: '#64B5F6',
-        },
-    },
-    spacing: {
-        base: 8,
-        screenPadding: 20,
-    },
-    typography: {
-        fontFamily: {
-            regular: 'System',
-            bold: 'System',
-        },
-        sizes: {
-            xxs: 10,
-            xs: 12,
-            sm: 16,
-            md: 20,
-            lg: 24,
-            xl: 32,
-            xxl: 36,
-        },
-        weights: {
-            light: '300',
-            regular: '400',
-            medium: '500',
-            bold: '700',
-        },
-    },
-    layout: {
-        radius: {
-            sm: 4,
-            md: 8,
-            lg: 16,
-            pill: 9999,
-        },
-    },
     features: {
         enableAdvancedRoles: true,
         debugMode: __DEV__,
@@ -170,5 +95,3 @@ export const AppConfig = {
         },
     },
 } as const;
-
-export type AppConfigType = typeof AppConfig;

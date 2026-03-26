@@ -2,7 +2,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { makeFormStyles } from './styles';
 
 type FormRadioProps = {
@@ -22,7 +22,7 @@ export const FormRadio: React.FC<FormRadioProps> = ({
     error,
     disabled = false,
 }) => {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const formStyles = React.useMemo(() => makeFormStyles(theme), [theme]);
 
     const hasError = !!(error && (Array.isArray(error) ? error.length : true));
@@ -46,17 +46,17 @@ export const FormRadio: React.FC<FormRadioProps> = ({
                         styles.outerCircle,
                         {
                             borderColor: hasError
-                                ? theme.colors.danger
+                                ? theme.color.danger
                                 : selected
-                                ? theme.colors.primary
-                                : theme.colors.border ?? '#CCC',
+                                ? theme.color.primary
+                                : theme.color.border ?? '#CCC',
                         },
                     ]}>
                 {selected && (
                     <View
                         style={[
                             styles.innerCircle,
-                            { backgroundColor: theme.colors.primary },
+                            { backgroundColor: theme.color.primary },
                         ]}/>
                 )}
                 </View>

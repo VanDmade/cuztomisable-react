@@ -8,7 +8,7 @@ import {
     View,
 } from 'react-native';
 
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../providers/ThemeProvider';
 import { makeFormStyles } from './styles';
 
 
@@ -32,7 +32,7 @@ export const FormCheckbox: React.FC<FormCheckboxProps> = ({
     disabled = false,
     fullWidthPressable = true,
 }) => {
-    const { theme } = useTheme();
+    const theme = useTheme();
     const formStyles = React.useMemo(() => makeFormStyles(theme), [theme]);
 
     const hasError = !!(error && (Array.isArray(error) ? error.length : true));
@@ -64,8 +64,8 @@ export const FormCheckbox: React.FC<FormCheckboxProps> = ({
                     style={({ pressed }) => [
                         styles.box,
                         {
-                             borderColor: hasError ? theme.colors.danger : theme.colors.border ?? '#CCC',
-                            backgroundColor: value ? theme.colors.primary : theme.colors.background,
+                             borderColor: hasError ? theme.color.danger : theme.color.border ?? '#CCC',
+                            backgroundColor: value ? theme.color.primary : theme.color.background,
                             opacity: pressed && !disabled ? 0.9 : 1,
                         },
                     ]}>

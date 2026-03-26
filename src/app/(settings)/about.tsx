@@ -1,15 +1,14 @@
 // src/app/(settings)/about.tsx
-import React from 'react';
 import { Text, View } from 'react-native';
 
-import { AppConfig } from '../../app.config';
 import { FormHeader, FormScreen } from '../../components';
-import { useTheme } from '../../contexts/ThemeContext';
-import { images as themeImages } from '../../theme/images';
+import { AppConfig } from '../../defaultConfig';
+import { useTheme } from '../../providers/ThemeProvider';
+import { imageDefault as themeImages } from '../../theme/images';
 
 export default function AboutScreen({ logoSource }: { logoSource?: any }) {
-    const { theme } = useTheme();
-    const baseText = { color: theme.colors.text };
+    const theme = useTheme();
+    const baseText = { color: theme.color.text };
 
     return (
         <FormScreen paddingTop="20">
