@@ -28,30 +28,38 @@ export default function MfaScreen({ logoSource }: { logoSource?: any }) {
     const [sent, setSent] = useState(false);
 
     useEffect(() => {
-        (async () => {
+        if (!token) return;
+
+        let mounted = true;
+
+        const run = async () => {
             try {
-                if (!token) {
-                    // The token is missing and the user shouldn't be here
-                    showMessage('Missing token', 'danger');
-                    router.push('/(auth)/login');
-                    return;
-                }
                 const data = await verifyMfaToken(token);
+
+                if (!mounted) return;
+
                 if (data.email == null || data.phone == null) {
                     setSent(true);
-                    if (data.phone == null) {
-                        showMessage(`The code was sent to ${data.email}.`, 'success');
-                    } else {
-                        showMessage(`The code was sent to ${data.phone}.`, 'success');
-                    }
+                    showMessage(
+                        `The code was sent to ${data.phone ?? data.email}.`,
+                        'success'
+                    );
                 }
+
                 setEmail(data.email);
                 setPhone(data.phone);
             } catch (err: any) {
+                if (!mounted) return;
                 showMessage(err?.message ?? 'Invalid or expired token', 'danger');
             }
-        })();
-    }, [token, router, showMessage, verifyMfaToken]);
+        };
+
+        run();
+
+        return () => {
+            mounted = false;
+        };
+    }, [token]); // ✅ ONLY token
 
     const onSubmit = async () => {
         return runAction(async () => {
@@ -81,15 +89,14 @@ export default function MfaScreen({ logoSource }: { logoSource?: any }) {
                     />
                     {!sent ? (
                         <>
-                            <View style={theme.styles.form}>
+                            <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                                 {email && (
                                     <FormCheckbox
                                         label={email}
                                         value={channel === 'email'}
                                         onValueChange={() => setChannel('email')}
                                         disabled={busy}
-                                        fullWidthPressable
-                                    />
+                                        fullWidthPressable />
                                 )}
                                 {phone && (
                                     <FormCheckbox
@@ -97,8 +104,7 @@ export default function MfaScreen({ logoSource }: { logoSource?: any }) {
                                         value={channel === 'sms'}
                                         onValueChange={() => setChannel('sms')}
                                         disabled={busy}
-                                        fullWidthPressable
-                                    />
+                                        fullWidthPressable />
                                 )}
                             </View>
                             <Button
@@ -109,7 +115,7 @@ export default function MfaScreen({ logoSource }: { logoSource?: any }) {
                         </>
                     ) : (
                         <>
-                            <View style={theme.styles.form}>
+                            <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                                 <FormInput
                                     theme={theme}
                                     placeholder="Code"
@@ -119,8 +125,7 @@ export default function MfaScreen({ logoSource }: { logoSource?: any }) {
                                     disabled={busy}
                                     capitalOnly
                                     onClearError={() => setErrors(prev => ({ ...prev, code: undefined }))}
-                                    error={errors?.code}
-                                />
+                                    error={errors?.code} />
                             </View>
                             <Button
                                 title="Verify"
@@ -129,8 +134,12 @@ export default function MfaScreen({ logoSource }: { logoSource?: any }) {
                                 containerStyle={theme.utils.mtmd} />
                             {isDone && (
                                 <LinkText onPress={onSend} style={theme.utils.mtmd} muted disabled={busy}>
-                                    Still haven&#39;t received the code?
-                                    <Text style={[theme.typography.variants.link, busy && theme.styles.mutedText]}>Resend</Text>
+                                    Still haven&#39;t received the code?{' '}
+                                    <Text
+                                        style={[
+                                            theme.typography.variants.link,
+                                            busy && theme.typography.variants.muted,
+                                        ]}>Resend</Text>
                                 </LinkText>
                             )}
                         </>

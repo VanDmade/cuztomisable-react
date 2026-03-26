@@ -7,13 +7,14 @@ import { FormScreen, ListItem, ListTitle } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
 import { useSettings } from '../../contexts/SettingsContext';
-import { AppConfig } from '../../defaultConfig';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
+import { useConfig } from '../../providers/ConfigProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 import { imageDefault as themeImages } from '../../theme/images';
 
 export default function SettingsScreen({ profileImageSource }: { profileImageSource?: any }) {
     const theme = useTheme();
+    const config = useConfig();
     const router = useRouter();
     const { busy, runAction } = useAsyncAction();
     const { showMessage } = useMessage();
@@ -77,11 +78,11 @@ export default function SettingsScreen({ profileImageSource }: { profileImageSou
                         busy={busy} />
 
                     <ListTitle title="App"></ListTitle>
-                    <ListItem title="Appearance" subtitle={theme.mode} onPress={() => router.push('/(settings)/appearance')} />
+                    <ListItem title="Appearance" subtitle={theme.mode.charAt(0).toUpperCase() + theme.mode.slice(1)} onPress={() => router.push('/(settings)/appearance')} />
                     <ListItem title="Rate this App" />
-                    <ListItem title="Privacy Policy" subtitle={`Last Updated: ${AppConfig.privacyPolicyLastUpdated}`} onPress={() => router.push('/(settings)/privacy')} />
-                    <ListItem title={`About ${AppConfig.appName}`} onPress={() => router.push('/(settings)/about')} />
-                    <ListItem title={`Version: ${AppConfig.version ?? '1.0.0'}`} />
+                    <ListItem title="Privacy Policy" subtitle={`Last Updated: ${config.privacyPolicyLastUpdated}`} onPress={() => router.push('/(settings)/privacy')} />
+                    <ListItem title={`About ${config.appName}`} onPress={() => router.push('/(settings)/about')} />
+                    <ListItem title={`Version: ${config.version ?? '1.0.0'}`} />
 
                     <ListTitle title="Account Actions"></ListTitle>
                     <ListItem title="Logout" onPress={handleLogout} danger />

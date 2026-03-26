@@ -38,7 +38,7 @@ export default function PasswordScreen() {
                         theme={theme}
                         title="Change Password"
                         subtitle="Strengthen your account with a new password." />
-                    <View style={theme.styles.form}>
+                    <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                         <FormInput
                             theme={theme}
                             placeholder="Current Password"
@@ -57,7 +57,7 @@ export default function PasswordScreen() {
                             disabled={busy}
                             onClearError={() => setErrors(prev => ({ ...prev, new: undefined }))}
                             error={errors?.new} />
-                        <PasswordRequirements password={newPassword} theme={theme} />
+                        <PasswordRequirements password={newPassword} />
                     </View>
                     <Button
                         title="Reset"

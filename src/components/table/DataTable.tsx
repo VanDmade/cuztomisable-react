@@ -38,7 +38,7 @@ type PaginationMeta = {
 
 type DataTableProps<T> = {
     url?: string;
-    name: string;
+    name?: string | null;
     columns: DataTableColumn<T>[];
     data?: T[];
     rowKey?: (row: T, index: number) => string | number;
@@ -71,7 +71,7 @@ function extractRows<T>(payload: any): { rows: T[]; meta?: PaginationMeta } {
 
 export function DataTable<T>({
     url,
-    name,
+    name = null,
     columns,
     data,
     rowKey,
@@ -271,7 +271,7 @@ export function DataTable<T>({
                 {searchable ? (
                     <FormInput
                         theme={theme}
-                        placeholder={`Search ${name.toLowerCase()}...`}
+                        placeholder={`Search${name ? ` ${name.toLowerCase()}` : ''}...`}
                         value={searchInput}
                         onChangeText={setSearchInput}
                     />

@@ -6,14 +6,15 @@ import { Text, View } from 'react-native';
 import { Button, FormHeader, FormInput, FormScreen, LinkText } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMessage } from '../../contexts/MessageContext';
-import { defaultConfig } from '../../defaultConfig';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useOnboarding } from '../../hooks/useOnboarding';
+import { useConfig } from '../../providers/ConfigProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 import { imageDefault as themeImages } from '../../theme/images';
 
 export default function LoginScreen({ logoSource }: { logoSource?: any }) {
     const theme = useTheme();
+    const config = useConfig();
     const router = useRouter();
     const { login } = useAuth();
     const { showMessage } = useMessage();
@@ -51,9 +52,9 @@ export default function LoginScreen({ logoSource }: { logoSource?: any }) {
                     <FormHeader
                         theme={theme}
                         title="Login"
-                        subtitle={`Welcome to ${defaultConfig.appName ?? 'Cuztomisable'}!`}
+                        subtitle={`Welcome to ${config.appName ?? 'Cuztomisable'}!`}
                         logoSource={logoSource || themeImages.logo} />
-                    <View style={theme.styles.form}>
+                    <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                         <FormInput
                             theme={theme}
                             placeholder="Email"
@@ -87,7 +88,12 @@ export default function LoginScreen({ logoSource }: { logoSource?: any }) {
                         Reset Onboarding
                     </LinkText>
                     <LinkText onPress={goToRegister} style={theme.utils.mtsm} muted disabled={busy}>
-                        Don't have an account? <Text style={[theme.typography.variants.link, busy && theme.styles.mutedText]}>Register</Text>
+                        Don't have an account?{' '}
+                        <Text
+                            style={[
+                                theme.typography.variants.link,
+                                busy && theme.typography.variants.muted,
+                            ]}>Register</Text>
                     </LinkText>
                 </View>
             )}

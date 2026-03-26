@@ -42,7 +42,7 @@ export default function RegisterScreen({ logoSource }: { logoSource?: any }) {
                         title="Sign Up"
                         subtitle="Your journey starts here"
                         logoSource={logoSource || themeImages.logo} />
-                    <View style={theme.styles.form}>
+                    <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                         <FormInput
                             theme={theme}
                             placeholder="Name"
@@ -63,7 +63,6 @@ export default function RegisterScreen({ logoSource }: { logoSource?: any }) {
                             onClearError={() => setErrors(prev => ({ ...prev, email: undefined }))}
                             error={errors?.email} />
                         <Phone
-                            theme={theme}
                             value={phone}
                             onChange={handlePhoneChange}
                             error={errors?.phone}
@@ -78,7 +77,7 @@ export default function RegisterScreen({ logoSource }: { logoSource?: any }) {
                             disabled={busy}
                             onClearError={() => setErrors(prev => ({ ...prev, password: undefined }))}
                             error={errors?.password} />
-                        <PasswordRequirements password={password} theme={theme} />
+                        <PasswordRequirements password={password} />
                     </View>
                     <Button
                         title="Register"
@@ -86,7 +85,12 @@ export default function RegisterScreen({ logoSource }: { logoSource?: any }) {
                         disabled={busy}
                         containerStyle={theme.utils.mtmd} />
                     <LinkText onPress={goToLogin} style={theme.utils.mtmd} muted disabled={busy}>
-                        Already have an account? <Text style={[theme.typography.variants.link, busy && theme.styles.mutedText]}>Login</Text>
+                        Already have an account?{' '}
+                        <Text
+                            style={[
+                                theme.typography.variants.link,
+                                busy && theme.typography.variants.muted,
+                            ]}>Login</Text>
                     </LinkText>
                 </View>
             )}

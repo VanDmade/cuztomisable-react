@@ -1,5 +1,3 @@
-// cuztomisable/src/theme/theme.ts
-
 import merge from 'lodash.merge';
 import { StyleSheet } from 'react-native';
 import { color, Color, ThemeMode } from './colors';
@@ -24,16 +22,20 @@ export const createTheme = (
     const mergedColor = merge({}, color, overrides.color);
     const colors = mergedColor[mode];
     const images = merge({}, imageDefault, overrides.image);
+
     const mergedLayout = getLayout({
         base: overrides.layout?.base,
         radius: overrides.layout?.radius,
     });
+
     const spacing = mergedLayout.spacing;
     const radius = mergedLayout.radius;
+
     const utils = {
         ...makeSpacingUtils(mergedLayout),
         ...makeCircleUtils(),
     };
+
     const typography = merge(
         {},
         getTypography(colors),
@@ -43,38 +45,12 @@ export const createTheme = (
     const styles = StyleSheet.create({
         widthFull: { width: '100%' },
         heightFull: { height: '100%' },
-        form: {
-            marginTop: 16,
-            marginBottom: 12,
-        },
+        flex: { flex: 1 },
         container: {
-            justifyContent: 'flex-start',
+            width: '100%',
         },
         screen: {
             flex: 1,
-            justifyContent: 'flex-start',
-        },
-        wrapper: {
-            width: '100%',
-            marginBottom: 4,
-        },
-        label: {
-            fontSize: 14,
-            fontWeight: '600',
-            marginBottom: 6,
-        },
-        input: {
-            fontSize: typography.sizes.xs,
-            borderWidth: 1,
-            borderColor: colors.border,
-            borderRadius: 10,
-            padding: 16,
-            color: colors.text,
-            backgroundColor: colors.background,
-        },
-        inputDisabled: {
-            backgroundColor: colors.white,
-            color: colors.muted,
         },
         button: {
             backgroundColor: colors.primary,
@@ -90,9 +66,6 @@ export const createTheme = (
             // @ts-expect-error
             fontWeight: typography.weights.bold,
             fontSize: typography.sizes.sm,
-        },
-        mutedText: {
-            color: colors.muted,
         },
         image: {
             width: '80%',
@@ -127,14 +100,13 @@ export const createTheme = (
         alignLeft: { alignItems: 'flex-start' },
         alignSelfLeft: { alignSelf: 'flex-start' },
         justifyLeft: { justifyContent: 'flex-start' },
-        flex: { flex: 1 },
         positionAbsolute: { position: 'absolute' },
         positionRelative: { position: 'relative' },
-        row: { flexDirection: 'row' },
-        rowSpaceBetween: { justifyContent: 'space-between' },
-        rowSpaceEvenly: { justifyContent: 'space-evenly' },
-        rowFlexStart: { justifyContent: 'flex-start' },
-        rowJustifyContentCenter: { justifyContent: 'center' },
+        row: { flexDirection: 'row', alignItems: 'center' },
+        rowSpaceBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+        rowSpaceEvenly: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' },
+        rowFlexStart: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' },
+        rowJustifyContentCenter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
         rowSelected: {
             backgroundColor: 'rgba(0,0,0,0.1)',
         },
@@ -161,12 +133,6 @@ export const createTheme = (
             fontSize: 16,
             fontWeight: '600',
             color: colors.text,
-        },
-        errorBorder: {
-            borderColor: colors.danger || '#D32F2F',
-        },
-        errorContainer: {
-            minHeight: 18,
         },
         divider: {
             width: 1,

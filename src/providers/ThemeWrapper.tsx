@@ -1,7 +1,6 @@
 // cuztomisable/providers/ThemeWrapper.tsx
 
 import React, { useMemo } from 'react';
-import { Appearance } from 'react-native';
 import { useConfig } from './ConfigProvider';
 import { ThemeProvider } from './ThemeProvider';
 
@@ -11,24 +10,18 @@ type Props = {
 
 export const ThemeWrapper = ({ children }: Props) => {
     const config = useConfig();
-    // Get system theme (light/dark)
-    const systemTheme = Appearance.getColorScheme();
-    const mode = useMemo<'light' | 'dark'>(() => {
-        if (config.followSystemTheme) {
-        return (systemTheme as 'light' | 'dark') || 'light';
-        }
-        return config.defaultTheme;
-    }, [config.followSystemTheme, config.defaultTheme, systemTheme]);
+
     const overrides = useMemo(() => {
         return {
-        layout: {
-            base: config.base,
-        },
+            layout: {
+                base: config.base,
+            },
+            ...config.theme,
         };
-    }, [config.base]);
+    }, [config.base, config.theme]);
 
     return (
-        <ThemeProvider mode={mode} overrides={overrides}>
+        <ThemeProvider overrides={overrides}>
             {children}
         </ThemeProvider>
     );

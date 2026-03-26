@@ -81,47 +81,130 @@ export const Footer: React.FC<Props> = ({
 
 	return (
 		(leftItems.length > 0 || rightItems.length > 0 || showPlus ?
-		<View style={[theme.styles.positionRelative, { height: navHeight }]}>
-			{showNavDropdown && (
-				<Dropdown
-					ref={navDropdownRef}
-					theme={theme}
-					showField={false}
-					modalTitle={dropdownTitle}
-					options={dropdownOptions}
-					onSelect={(route) => go(route)} />
-			)}
-			{showPlus && (
-				showPlusDropdown ? (
+			<View style={[theme.styles.positionRelative, { height: navHeight }]}>
+				{showNavDropdown && (
 					<Dropdown
-						ref={plusDropdownRef}
+						ref={navDropdownRef}
 						theme={theme}
 						showField={false}
-						modalTitle={plusTitle}
-						options={actions}
+						modalTitle={dropdownTitle}
+						options={dropdownOptions}
 						onSelect={(route) => go(route)} />
-				) : null
-			)}
-			<View
-				style={[
-				theme.styles.container,
-				theme.styles.background,
-				{
-					height: navHeight,
-					borderTopColor: theme.color.border,
-					borderTopWidth: 1,
-					paddingBottom: frozenBottomInset,
-				},
-			]}>
-				{showPlus ? (
-					<View style={[theme.styles.flex, theme.styles.row, theme.styles.alignCenter, theme.styles.rowSpaceBetween]}>
-						<View style={[theme.styles.flex, theme.styles.alignCenter]}>
-							{/* ...rest of the BottomNav rendering logic... */}
+				)}
+				{showPlus && (
+					showPlusDropdown ? (
+						<Dropdown
+							ref={plusDropdownRef}
+							theme={theme}
+							showField={false}
+							modalTitle={plusTitle}
+							options={actions}
+							onSelect={(route) => go(route)} />
+					) : null
+				)}
+				<View
+					style={[
+					theme.styles.container,
+					theme.styles.background,
+					{
+						height: navHeight,
+						borderTopColor: theme.color.border,
+						borderTopWidth: 1,
+						paddingBottom: frozenBottomInset,
+					},
+				]}>
+					{showPlus ? (
+						<View style={[theme.styles.flex, theme.styles.row, theme.styles.alignCenter, theme.styles.rowSpaceBetween]}>
+							
+							{/* LEFT */}
+							<View style={[theme.styles.flex, theme.styles.alignCenter]}>
+								<View style={[theme.styles.row, theme.styles.alignCenter, { gap: 24 }]}>
+									{leftItems.map(item => (
+										<MaterialCommunityIcons
+											key={item.key}
+											name={item.icon}
+											size={24}
+											color={theme.color.text}
+											onPress={() => handleItemPress(item)}
+										/>
+									))}
+								</View>
+							</View>
+
+							{/* SPACER (for FAB) */}
+							<View style={{ width: 64 }} />
+
+							{/* RIGHT */}
+							<View style={[theme.styles.flex, theme.styles.alignCenter]}>
+								<View style={[theme.styles.row, theme.styles.alignCenter, { gap: 24 }]}>
+									{rightItems.map(item => (
+										<MaterialCommunityIcons
+											key={item.key}
+											name={item.icon}
+											size={24}
+											color={theme.color.text}
+											onPress={() => handleItemPress(item)}
+										/>
+									))}
+								</View>
+							</View>
+
+							{/* FAB */}
+							<View
+								style={[
+									theme.styles.positionAbsolute,
+									theme.styles.alignCenter,
+									{
+										left: 0,
+										right: 0,
+										top: -16,
+									},
+								]}
+								pointerEvents="box-none"
+							>
+								<View
+									style={[
+										theme.utils.circle64,
+										theme.styles.alignCenter,
+										theme.styles.justifyCenter,
+										{
+											backgroundColor: theme.color.primary,
+											borderWidth: 1,
+											borderColor: theme.color.border,
+										},
+									]}
+								>
+									<MaterialCommunityIcons
+										name="plus"
+										size={28}
+										color="#fff"
+										onPress={() => {
+											if (showPlusDropdown) {
+												plusDropdownRef.current?.open();
+											} else {
+												const route = resolvePlusRoute();
+												if (route) go(route);
+											}
+										}}
+									/>
+								</View>
+							</View>
 						</View>
-					</View>
-				) : null}
+					) : (
+						<View style={[theme.styles.flex, theme.styles.row, theme.styles.alignCenter, theme.styles.rowSpaceEvenly]}>
+							{safeItems.map(item => (
+								<MaterialCommunityIcons
+									key={item.key}
+									name={item.icon}
+									size={24}
+									color={theme.color.text}
+									onPress={() => handleItemPress(item)}
+								/>
+							))}
+						</View>
+					)}
+				</View>
 			</View>
-		</View>
 		: null)
 	);
 };

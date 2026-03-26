@@ -1,7 +1,7 @@
 // cuztomisable/services/user.service.ts
 import * as SecureStore from 'expo-secure-store';
 
-import { api } from '../api/api';
+import { getApi as api } from '../api/api';
 import { fileFromUri } from '../utils/formatters/formatImage';
 import { mapUserToUserDTO } from '../utils/formatters/user';
 
@@ -40,7 +40,7 @@ export type ToggleTwoFactorResponse = {
 };
 
 export async function get(): Promise<GetUserResponse> {
-    const { data } = await api.get('/user');
+    const { data } = await api().get('/user');
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -76,7 +76,7 @@ export async function update({
     } else if (imageChange === 'clear') {
         formData.append('clear_image', '1');
     }
-    const { data } = await api.post('/profile', formData, {
+    const { data } = await api().post('/profile', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
     if (!data || typeof data !== 'object') {
@@ -100,7 +100,7 @@ export async function changePassword(
     const formData = new FormData();
     formData.append('current', currentPassword);
     formData.append('new', newPassword);
-    const { data } = await api.post('/user/change/password', formData, {
+    const { data } = await api().post('/user/change/password', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
     if (!data || typeof data !== 'object') {
@@ -112,7 +112,7 @@ export async function changePassword(
 }
 
 export async function toggleTwoFactor(enabled: boolean): Promise<ToggleTwoFactorResponse> {
-    const { data } = await api.patch('/mfa');
+    const { data } = await api().patch('/mfa');
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }

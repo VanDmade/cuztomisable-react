@@ -1,9 +1,7 @@
-// src/components/form/styles.ts
 import { StyleSheet } from 'react-native';
 import type { Theme } from '../../theme/theme';
 
 export const makeFormStyles = (theme: Theme) => {
-    const danger = theme.color.danger ?? '#D32F2F';
     return StyleSheet.create({
         wrapper: {
             width: '100%',
@@ -28,22 +26,13 @@ export const makeFormStyles = (theme: Theme) => {
         error: {
             marginTop: 4,
             fontSize: 12,
-            color: danger,
+            color: theme.color.danger,
         },
         errorContainer: {
             minHeight: 18,
         },
         errorBorder: {
-            borderColor: danger,
-        },
-        row: {
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-        rowSpaceBetween: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            borderColor: theme.color.danger,
         },
         input: {
             fontSize: theme.typography.sizes.xs,
@@ -52,21 +41,11 @@ export const makeFormStyles = (theme: Theme) => {
             borderRadius: 10,
             padding: 16,
             color: theme.color.text,
-            backgroundColor: theme.color.background,
+            backgroundColor: theme.color.surface,
         },
         inputDisabled: {
-            backgroundColor: theme.color.white,
+            backgroundColor: theme.color.border,
             color: theme.color.muted,
-        },
-        chevron: {
-            marginLeft: 8,
-            fontSize: 12,
-            color: theme.color.text,
-        },
-        divider: {
-            width: 1,
-            alignSelf: 'stretch',
-            marginHorizontal: 4,
         },
         chip: {
             borderRadius: 16,

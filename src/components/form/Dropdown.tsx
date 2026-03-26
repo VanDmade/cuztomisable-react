@@ -136,7 +136,7 @@ export const Dropdown = forwardRef(function DropdownInner<T = any>(
                         numberOfLines={1}>
                         {selectedOption ? (selectedOption.selectedText ?? selectedOption.label) : placeholder}
                     </Text>
-                    <Text style={[formStyles.chevron, textStyle]}>▼</Text>
+                    <Text style={[activeTheme.styles.chevron, textStyle]}>▼</Text>
                 </TouchableOpacity>
             ) : null}
             <Modal visible={visible} transparent animationType="none" onRequestClose={close}>

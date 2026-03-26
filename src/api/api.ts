@@ -1,16 +1,11 @@
-// api/api.ts
-
 import axios, { AxiosInstance } from 'axios';
 import { Platform } from 'react-native';
+import { getConfig } from '../providers/ConfigProvider'; // 👈 add this
 import { attachInterceptors } from './interceptors';
 
-export type ApiConfig = {
-    baseUrl: string;
-    appName: string;
-    version: string;
-};
+export function getApi(): AxiosInstance {
+    const config = getConfig(); // 👈 pull globally
 
-export function createApi(config: ApiConfig): AxiosInstance {
     const DEVICE_TYPE =
         Platform.OS === 'android'
             ? 'Android'

@@ -16,7 +16,10 @@ export const PasswordRequirements: React.FC<Props> = ({ password }) => {
     const { color, styles, utils } = useTheme();
     const config = useConfig();
 
-    const results = useMemo(() => validatePassword(password), [password]);
+    const results = useMemo(
+        () => validatePassword(password, config.passwordRequirements),
+        [password, config.passwordRequirements]
+    );
 
     const policy = config.passwordRequirements;
     const { minimum, maximum, numbers, symbols, lowercase, uppercase } = policy;

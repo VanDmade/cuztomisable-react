@@ -91,7 +91,6 @@ export default function ProfileScreen({ defaultImageSource }: { defaultImageSour
                         onClearError={() => setErrors(prev => ({ ...prev, email: undefined }))}
                         error={errors?.email} />
                     <Phone
-                        theme={theme}
                         value={phone}
                         onChange={setPhone}
                         error={errors?.phone}

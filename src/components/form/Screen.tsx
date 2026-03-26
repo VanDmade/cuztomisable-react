@@ -58,9 +58,8 @@ export function FormScreen({
                     justifyContent: centered ? 'center' : 'flex-start',
                 }}
                 scrollIndicatorInsets={{ bottom: bottomPadding }}
-                    keyboardDismissMode="on-drag"
-            >
-                {children?.({})}
+                keyboardDismissMode="on-drag">
+                {typeof children === 'function' ? children({}) : children}
             </ScrollView>
             <View
                 pointerEvents="box-none"

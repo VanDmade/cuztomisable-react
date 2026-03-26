@@ -62,7 +62,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                     error && formStyles.errorBorder,
                     style,
                 ]}
-                placeholderTextColor={activeTheme.color.muted ?? '#AAA'}
+                placeholderTextColor={activeTheme.color.muted}
                 onChangeText={handleChangeText} />
             <Animated.View style={[formStyles.errorContainer, { opacity: fadeAnim }]}>
                 <Text style={activeTheme.typography.variants.error}>{error || ' '}</Text>

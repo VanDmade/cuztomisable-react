@@ -6,7 +6,7 @@ export const defaultConfig = {
     // Layout/spacing base value for theme
     base: 8,
     appName: 'Cuztomisable',
-    version: 'v1.0',
+    version: 'v1.0.0',
     locale: 'en-US',
     defaultTheme: 'light' as ThemeMode,
     supportEmail: 'michaelvanderwerkerllc@gmail.com',

@@ -1,5 +1,5 @@
 // src/services/password.service.ts
-import { api } from '../api/api';
+import { getApi as api } from '../api/api';
 
 // Define response types
 export type PasswordResetRequestResponse = {
@@ -21,7 +21,7 @@ export type PasswordResetResendResponse = {
 };
 
 export async function request(username: string): Promise<PasswordResetRequestResponse> {
-    const { data } = await api.post('/password/forgot', { username });
+    const { data } = await api().post('/password/forgot', { username });
     // Validate response shape
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
@@ -40,7 +40,7 @@ export async function verify(token: string, code: string): Promise<PasswordReset
         // The user has not sent in a code
         code = 'shame';
     }
-    const { data } = await api.get(
+    const { data } = await api().get(
         `/password/forgot/${encodeURIComponent(token)}/verify/${encodeURIComponent(code)}`
     );
     if (!data || typeof data !== 'object') {
@@ -53,7 +53,7 @@ export async function verify(token: string, code: string): Promise<PasswordReset
 }
 
 export async function resend(token: string): Promise<PasswordResetResendResponse> {
-    const { data } = await api.get(`/password/forgot/${encodeURIComponent(token)}/send`);
+    const { data } = await api().get(`/password/forgot/${encodeURIComponent(token)}/send`);
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -66,7 +66,7 @@ export async function finalize(
     token: string,
     payload: { code: string; password: string }
 ): Promise<PasswordResetFinalizeResponse> {
-    const { data } = await api.post(`/password/forgot/${encodeURIComponent(token)}`, payload);
+    const { data } = await api().post(`/password/forgot/${encodeURIComponent(token)}`, payload);
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }

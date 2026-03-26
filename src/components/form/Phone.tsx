@@ -42,18 +42,13 @@ export const Phone: React.FC<PhoneProps> = ({
     style,
     ...textInputProps
 }) => {
-    const { color, styles, utils, typography } = useTheme();
+    const theme = useTheme();
+    const { color, styles, utils, typography } = theme;
     const config = useConfig();
 
     const formStyles = useMemo(
-        () =>
-            makeFormStyles({
-                color,
-                styles,
-                utils,
-                typography,
-            } as any),
-        [color, styles, utils, typography]
+        () => makeFormStyles(theme),
+        [theme]
     );
 
     const options = useMemo(() => {
@@ -115,22 +110,20 @@ export const Phone: React.FC<PhoneProps> = ({
     return (
         <View style={formStyles.wrapper}>
             {label && <Text style={formStyles.label}>{label}</Text>}
-
             <View
                 style={[
-                    formStyles.row,
+                    styles.row,
                     formStyles.input,
                     utils.pynone,
                     disabled && formStyles.inputDisabled,
                     error && formStyles.errorBorder,
                     style,
-                ]}
-            >
+                ]}>
                 {showCountryCode && options.length > 1 && (
                     <>
                         <Dropdown
                             fieldStyle={{
-                                ...formStyles.rowSpaceBetween,
+                                ...styles.rowSpaceBetween,
                                 minWidth: 75,
                             }}
                             modalTitle="Select Country"
@@ -138,18 +131,15 @@ export const Phone: React.FC<PhoneProps> = ({
                             value={internal.countryCode}
                             options={options}
                             onSelect={handleCountryChange}
-                            disabled={disabled}
-                        />
+                            disabled={disabled} />
 
                         <View
                             style={[
-                                formStyles.divider,
+                                styles.divider,
                                 { backgroundColor: color.border },
-                            ]}
-                        />
+                            ]} />
                     </>
                 )}
-
                 <TextInput
                     style={[
                         styles.flex,
@@ -169,13 +159,9 @@ export const Phone: React.FC<PhoneProps> = ({
                     placeholderTextColor={color.muted}
                     value={internal.number}
                     onChangeText={handleNumberChange}
-                    {...textInputProps}
-                />
+                    {...textInputProps} />
             </View>
-
-            <Animated.View
-                style={[formStyles.errorContainer, { opacity: fadeAnim }]}
-            >
+            <Animated.View style={[formStyles.errorContainer, { opacity: fadeAnim }]}>
                 <Text style={typography.variants.error}>
                     {error || ' '}
                 </Text>

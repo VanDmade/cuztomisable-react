@@ -16,7 +16,7 @@ export default function AppearanceScreen() {
                         theme={theme}
                         title="Appearance"
                         subtitle="Pick the look that works best for you." />
-                    <View style={theme.styles.form}>
+                    <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                         <FormRadio
                             label="Phone's default"
                             selected={appearance === 'default'}

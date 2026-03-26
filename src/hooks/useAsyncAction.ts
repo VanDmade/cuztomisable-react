@@ -25,6 +25,7 @@ export function useAsyncAction(throwError = false) {
         try {
             await fn();
         } catch (e: any) {
+            console.log(e);
             const { message: msgText, errors: fieldErrors } = formatErrorResponse(e);
             showMessage(msgText, 'danger');
             setErrors(fieldErrors);

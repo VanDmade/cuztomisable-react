@@ -1,6 +1,6 @@
 // src/services/auth.service.ts
 import * as SecureStore from 'expo-secure-store';
-import { api } from '../api/api';
+import { getApi as api } from '../api/api';
 
 import { mapUserToUserDTO } from '../utils/formatters/user';
 
@@ -46,7 +46,7 @@ export type RefreshResponse = {
 };
 
 export async function login(username: string, password: string): Promise<LoginResponse> {
-    const { data } = await api.post('login', { username, password });
+    const { data } = await api().post('login', { username, password });
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -75,7 +75,7 @@ export async function register(payload: {
     name?: string;
     phone: string;
 }): Promise<RegisterResponse> {
-    const { data } = await api.post('/register', payload);
+    const { data } = await api().post('/register', payload);
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -86,7 +86,7 @@ export async function register(payload: {
 }
 
 export async function verifyMfaToken(token: string): Promise<VerifyMfaTokenResponse> {
-    const { data } = await api.get(`login/mfa/${encodeURIComponent(token)}/verify`);
+    const { data } = await api().get(`login/mfa/${encodeURIComponent(token)}/verify`);
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -98,7 +98,7 @@ export async function verifyMfaToken(token: string): Promise<VerifyMfaTokenRespo
 }
 
 export async function sendMfaCode(token: string, type: string): Promise<SendMfaCodeResponse> {
-    const { data } = await api.post(`login/mfa/${encodeURIComponent(token)}/send`, { type });
+    const { data } = await api().post(`login/mfa/${encodeURIComponent(token)}/send`, { type });
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -108,7 +108,7 @@ export async function sendMfaCode(token: string, type: string): Promise<SendMfaC
 }
 
 export async function finalizeMfa(token: string, code: string): Promise<FinalizeMfaResponse> {
-    const { data } = await api.post(`login/mfa/${encodeURIComponent(token)}`, {
+    const { data } = await api().post(`login/mfa/${encodeURIComponent(token)}`, {
         code,
         remember: 0,
     });
@@ -134,7 +134,7 @@ export async function refresh(): Promise<RefreshResponse> {
     if (!refreshToken) {
         throw new Error('No refresh token available');
     }
-    const { data } = await api.post('/refresh', { refresh_token: refreshToken });
+    const { data } = await api().post('/refresh', { refresh_token: refreshToken });
     if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
     }
@@ -158,7 +158,7 @@ export async function refresh(): Promise<RefreshResponse> {
 
 export async function logout(): Promise<void> {
     try {
-        await api.post('/logout');
+        await api().post('/logout');
     } catch (error) {
         // Ignore logout API errors, still clear local storage
         console.warn('Logout API call failed:', error);

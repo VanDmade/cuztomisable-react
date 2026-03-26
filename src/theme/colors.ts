@@ -16,7 +16,7 @@ export const color = {
         background: '#FFFFFF',
         surface: '#FFFFFF',
         text: '#1A1A1A',
-        muted: '#6B6B6B',
+        muted: '#141111',
         white: '#FFFFFF',
         border: '#E6E6E6',
         link: '#0A66C2',

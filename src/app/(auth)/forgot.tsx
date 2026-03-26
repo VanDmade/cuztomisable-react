@@ -40,7 +40,7 @@ export default function ForgotScreen({ logoSource }: { logoSource?: any }) {
                         title="Forgot Password"
                         subtitle="Enter the email associated with your account"
                         logoSource={logoSource || themeImages.logo} />
-                    <View style={theme.styles.form}>
+                    <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                         <FormInput
                             theme={theme}
                             placeholder="Email"
@@ -58,7 +58,12 @@ export default function ForgotScreen({ logoSource }: { logoSource?: any }) {
                         disabled={busy}
                         containerStyle={theme.utils.mtmd}/>
                     <LinkText onPress={goToLogin} style={theme.utils.mtmd} muted disabled={busy}>
-                        Remember your password? <Text style={[theme.typography.variants.link, busy && theme.styles.mutedText]}>Login</Text>
+                        Remember your password?{' '}
+                        <Text
+                            style={[
+                                theme.typography.variants.link,
+                                busy && theme.typography.variants.muted,
+                            ]}>Login</Text>
                     </LinkText>
                 </View>
             )}

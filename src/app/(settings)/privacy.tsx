@@ -2,11 +2,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { FormHeader, FormScreen } from '../../components';
-import { AppConfig } from '../../defaultConfig';
+import { useConfig } from '../../providers/ConfigProvider';
 import { useTheme } from '../../providers/ThemeProvider';
 
 export default function PrivacyScreen() {
     const theme = useTheme();
+    const config = useConfig();
     const baseText = { color: theme.color.text };
     return (
         <FormScreen paddingTop="20">
@@ -15,8 +16,8 @@ export default function PrivacyScreen() {
                     <FormHeader
                         theme={theme}
                         title="Privacy Policy"
-                        subtitle={AppConfig.privacyPolicyLastUpdated} />
-                    <View style={theme.styles.form}>
+                        subtitle={config.privacyPolicyLastUpdated} />
+                    <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                         <Text style={baseText}>We respect your privacy and are committed to protecting any personal information you choose to share with us. This temporary privacy policy explains, in simple terms, what data we collect, how we use it, and the limited circumstances in which it may be shared.</Text>
                         <Text style={[styles.reportTitle, theme.utils.mtsm, baseText]}>Information We Collect</Text>
                         <Text style={baseText}>We may collect basic information you voluntarily provide - such as your name, email address, or account details - when you use the app. We also collect anonymous usage data to help us understand how people interact with our features and improve the experience.</Text>
@@ -51,7 +52,7 @@ export default function PrivacyScreen() {
                         <Text style={[styles.reportTitle, theme.utils.mtsm, baseText]}>Changes to This Policy</Text>
                         <Text style={baseText}>This temporary Privacy Policy may be updated as the app evolves. We will revise the &#34;Last Updated&#34; date whenever changes are made.</Text>
                         <Text style={[styles.reportTitle, theme.utils.mtsm, baseText]}>Contact Us</Text>
-                        <Text style={baseText}>If you have any questions, concerns, or requests regarding your privacy, feel free to contact us at: {AppConfig.supportEmail}</Text>
+                        <Text style={baseText}>If you have any questions, concerns, or requests regarding your privacy, feel free to contact us at: {config.supportEmail}</Text>
                     </View>
                 </View>
             )}

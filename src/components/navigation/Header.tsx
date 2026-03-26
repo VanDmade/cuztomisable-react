@@ -12,19 +12,13 @@ type Props = {
 	logo?: boolean;
 	settings?: boolean;
 	back?: boolean;
-	logoSource?: any;
-	backImageSource?: any;
-	profileImageSource?: any;
 };
 
 export const Header: React.FC<Props> = ({
 	title = null,
 	logo = false,
 	settings = false,
-	back = false,
-	logoSource,
-	backImageSource,
-	profileImageSource,
+	back = false
 }) => {
 	const theme = useTheme();
 	const router = useRouter();
@@ -58,13 +52,13 @@ export const Header: React.FC<Props> = ({
 			<View style={[ theme.styles.row, theme.styles.alignCenter ]}>
 				<TouchableOpacity onPress={goToHome} activeOpacity={0.8}>
 					{logo ? (<Image
-						source={logoSource}
+						source={theme.image.logo}
 						style={styles.item}
 						resizeMode="contain" />) : (<></>)}
 				</TouchableOpacity>
 				<TouchableOpacity onPress={goBack} activeOpacity={0.8}>
 					{back ? (<Image
-						source={backImageSource}
+						source={theme.image.back}
 						style={styles.item}
 						resizeMode="cover" />) : (<></>)}
 				</TouchableOpacity>
@@ -73,7 +67,7 @@ export const Header: React.FC<Props> = ({
 			<View style={[ theme.styles.row, theme.styles.alignCenter ]}>
 				<TouchableOpacity onPress={goToSettings} activeOpacity={0.8}>
 					{settings ? (<Image
-						source={user?.image ? {uri: user.image} : profileImageSource}
+						source={user?.image ? {uri: user.image} : theme.image.profile}
 						style={[styles.item, {borderColor: theme.color.primary, borderWidth: 1}]}
 						resizeMode="cover" />
 						) : null}

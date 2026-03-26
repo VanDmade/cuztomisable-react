@@ -60,7 +60,7 @@ export default function ResetScreen({ logoSource }: { logoSource?: any }) {
                                 title="Reset Password"
                                 subtitle="Code has been sent!"
                                 logoSource={logoSource || themeImages.logo} />
-                            <View style={theme.styles.form}>
+                            <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                                 <FormInput
                                     theme={theme}
                                     placeholder="Code"
@@ -79,11 +79,11 @@ export default function ResetScreen({ logoSource }: { logoSource?: any }) {
                                 containerStyle={theme.utils.mtmd} />
                             {isDone && (
                                 <LinkText onPress={onResend} style={theme.utils.mtmd} muted disabled={busy}>
-                                    Still haven&#39;t received the code?
+                                    Still haven&#39;t received the code?{' '}
                                     <Text
                                         style={[
                                             theme.typography.variants.link,
-                                            busy && theme.styles.mutedText,
+                                            busy && theme.typography.variants.muted,
                                         ]}>Resend</Text>
                                 </LinkText>
                             )}
@@ -95,7 +95,7 @@ export default function ResetScreen({ logoSource }: { logoSource?: any }) {
                                 title="Reset Password"
                                 subtitle="Your code has been verified!"
                                 logoSource={logoSource || themeImages.logo} />
-                            <View style={theme.styles.form}>
+                            <View style={[theme.utils.mtlg, theme.utils.widthFull]}>
                                 <FormInput
                                     theme={theme}
                                     placeholder="Password"
@@ -105,7 +105,7 @@ export default function ResetScreen({ logoSource }: { logoSource?: any }) {
                                     disabled={busy}
                                     onClearError={() => setErrors(prev => ({ ...prev, password: undefined }))}
                                     error={errors?.password} />
-                                <PasswordRequirements password={password} theme={theme} />
+                                <PasswordRequirements password={password} />
                             </View>
                             <Button
                                 title="Reset Password"
@@ -113,11 +113,11 @@ export default function ResetScreen({ logoSource }: { logoSource?: any }) {
                                 disabled={busy || code.trim().length < 4}
                                 containerStyle={theme.utils.mtmd} />
                             <LinkText onPress={goToLogin} style={theme.utils.mtmd} muted disabled={busy}>
-                                Remember your password?
+                                Remember your password?{' '}
                                 <Text
                                     style={[
                                         theme.typography.variants.link,
-                                        busy && theme.styles.mutedText,
+                                        busy && theme.typography.variants.muted,
                                     ]}>Go back to Login</Text>
                             </LinkText>
                         </>

@@ -16,7 +16,6 @@ export default function TabLayout() {
                         headerShown: false,
                         animation: 'fade',
                         animationDuration: 250,
-                        // sceneStyle removed
                     }}/>
             </View>
         </View>
