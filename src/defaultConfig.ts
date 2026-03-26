@@ -47,7 +47,7 @@ export const defaultConfig = {
             image: 'slide3',
             title: 'Configure Everything',
             subtitle: 'Endless customization',
-            description: 'A simple, flexible config file gives you control over authentication, roles, UI flows, and more. No boilerplate required.',
+            description: 'A simple, flexible configuration files that gives you control over authentication, roles, UI flows, and more. No boilerplate required.',
         },
         {
             image: 'slide4',

@@ -20,6 +20,8 @@ export const color = {
         white: '#FFFFFF',
         border: '#E6E6E6',
         link: '#0A66C2',
+        buttonTextColor: '#F1F1F1',
+        buttonTextColorInverse: '#1A1A1A',
     },
     dark: {
         primary: '#F97316',
@@ -38,6 +40,8 @@ export const color = {
         white: '#FFFFFF',
         border: '#3A3A3A',
         link: '#64B5F6',
+        buttonTextColor: '#1A1A1A',
+        buttonTextColorInverse: '#F1F1F1',
     },
 };
 

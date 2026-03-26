@@ -36,12 +36,12 @@ export default function OnboardingScreen() {
     const { markComplete } = useOnboarding();
 
     const config = useConfig();
-    const { image } = useTheme();
+    const { image, color } = useTheme();
+    const isDark = color.background === '#121212';
 
     const slides: Slide[] = useMemo(() => {
         const onboarding = config.onboarding ?? [];
-
-        return onboarding.map((slide) => ({
+        return onboarding.map((slide: Slide) => ({
             ...slide,
             image: image.onboarding?.[slide.image] ?? null,
         }));
@@ -102,21 +102,28 @@ export default function OnboardingScreen() {
     const Dots = useMemo(
         () => (
             <View style={styles.dotsRow} accessibilityRole="tablist">
-                {slides.map((_, i) => (
-                    <View
-                        key={`dot-${i}`}
-                        style={[styles.dot, i === index && styles.dotActive]}
-                        accessibilityRole="tab"
-                        accessibilityState={{ selected: i === index }}
-                    />
-                ))}
+                {slides.map((_, i) => {
+                    const baseColor = isDark ? color.white : color.text;
+                    return (
+                        <View
+                            key={`dot-${i}`}
+                            style={[
+                                styles.dot,
+                                { backgroundColor: baseColor, opacity: 0.35 },
+                                i === index && { ...styles.dotActive, backgroundColor: baseColor, opacity: 0.9 },
+                            ]}
+                            accessibilityRole="tab"
+                            accessibilityState={{ selected: i === index }}
+                        />
+                    );
+                })}
             </View>
         ),
-        [index, slides]
+        [index, slides, isDark, color]
     );
 
     return (
-        <View style={styles.screen}>
+        <View style={[styles.screen, { backgroundColor: color.background }]}> 
             <FlatList
                 ref={listRef}
                 data={slides}
@@ -128,9 +135,7 @@ export default function OnboardingScreen() {
                 onMomentumScrollEnd={onMomentumEnd}
                 scrollEventThrottle={16}
                 bounces={false} />
-
             {Dots}
-
             <View style={styles.footer}>
                 {!isLast && !skipDisabled ? (
                     <Button
@@ -140,6 +145,7 @@ export default function OnboardingScreen() {
                         testID="btn-skip"
                         containerStyle={styles.skipBtn}
                         align="center"
+                        colors={{ foreground: color.text }}
                     />
                 ) : (
                     <View />

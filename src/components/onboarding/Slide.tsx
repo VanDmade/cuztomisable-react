@@ -20,6 +20,9 @@ export const Slide: React.FC<Props> = (props) => {
         <View
             style={[
                 styles.container,
+                styles.alignCenter,
+                styles.justifyCenter,
+                styles.flex,
                 {
                     backgroundColor: color.background,
                     paddingHorizontal: 24,

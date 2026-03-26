@@ -90,7 +90,7 @@ function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: 
     if (variant === 'solid') {
         return {
             background: intentColor,
-            foreground: theme.white,
+            foreground: theme.buttonTextColor,
             border: intentColor,
             pressedBackground: 'rgba(0,0,0,0.10)',
             disabledBackground: theme.border,
@@ -109,10 +109,10 @@ function resolveIntentColors(theme: ThemeColors, intent: ButtonIntent, variant: 
         };
     }
 
-    if (variant === 'text') {
+    if (variant === 'text' || variant === 'ghost') {
         return {
             background: 'transparent',
-            foreground: intentColor,
+            foreground: theme.buttonTextColorInverse,
             border: 'transparent',
             pressedBackground: 'rgba(0,0,0,0.04)',
             disabledBackground: 'transparent',
@@ -288,12 +288,12 @@ export default function Button({
                             ) : title ? (
                                 <Text
                                     style={[
-                                        /*{
+                                        {
                                             color: computed.foregroundColor,
                                             fontSize: preset.fontSize,
                                             fontWeight: typography.weights.medium,
                                             flexShrink: 1,
-                                        },*/
+                                        },
                                         textStyle,
                                     ]}
                                     numberOfLines={textNumberOfLines}
